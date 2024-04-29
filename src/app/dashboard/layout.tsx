@@ -14,11 +14,13 @@ import {
   DropdownItem,
   Button,
 } from "@nextui-org/react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import Logo from "../_components/logo";
 import useGetAuth from "@/api/hooks/useGetAuth";
 import store from "@/api/store";
+import { signOut } from "firebase/auth";
+import { auth } from "@/api/firebase";
 
 const menuItems = [
   {
@@ -35,7 +37,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const user = useGetAuth();
   const userStore = store().user;
-  if (!user && !userStore) redirect("/");
+  const router = useRouter();
+  if (!user && !userStore) router.replace("/");
+
+  async function handleLogout() {
+    await signOut(auth);
+    router.replace("/");
+  }
   return (
     <>
       <Navbar
@@ -71,6 +79,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Logo />
           </NavbarBrand>
           {menuItems.map((item, key) => {
+            if (item.label === "Profile") {
+              return (
+                <Dropdown key={`${item.label}-${key}`}>
+                  <DropdownTrigger>
+                    <NavbarItem
+                      key={`${item.label}-${key}`}
+                      isActive={pathname === item.href}
+                    >
+                      {item.label}
+                    </NavbarItem>
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label="Static Actions">
+                    <DropdownItem key="profile">Check Profile</DropdownItem>
+                    <DropdownItem key="logout" onClick={handleLogout}>
+                      Logout
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              );
+            }
             return (
               <NavbarItem
                 key={`${item.label}-${key}`}

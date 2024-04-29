@@ -6,7 +6,7 @@ import { BackgroundBeams } from "./_components/background-beams";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Themos.ai",
   description: "Your Migration assistant",
   icons: {
