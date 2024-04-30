@@ -39,7 +39,10 @@ export default function Chat({ country }: ChatType) {
         <div className="mb-8 h-8 w-full max-w-md animate-pulse rounded-lg bg-gray-300 p-2 dark:bg-gray-600" />
       )}
 
-      <form onSubmit={submitMessage} className="flex flex-row items-center">
+      <form
+        onSubmit={submitMessage}
+        className="flex flex-row items-center flex-wrap lg:flex-nowrap"
+      >
         <Input
           ref={inputRef}
           multiple
@@ -49,7 +52,11 @@ export default function Chat({ country }: ChatType) {
           placeholder="Describe us your case in detail:"
           onChange={handleInputChange}
         />
-        <Button className="px-8 mx-1" type="submit" color="default">
+        <Button
+          className="px-8 mx-1 my-2 lg:my-0"
+          type="submit"
+          color="default"
+        >
           Generate answer
         </Button>
       </form>

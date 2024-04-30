@@ -8,7 +8,7 @@ import Stepper from "../_components/Stepper";
 export default function Spain() {
   return (
     <div className="my-10 w-full p-10 z-10">
-      <div className="flex w-full flex-col p-10">
+      <div className="flex w-full flex-col">
         <h1 className="my-2">Canada</h1>
         <Tabs aria-label="Options">
           <Tab key="guide" title="Guide me">

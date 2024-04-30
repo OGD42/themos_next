@@ -50,9 +50,9 @@ export default function StyledFirebaseAuth() {
   return (
     <div className="flex flex-col">
       <h1>Sign In with:</h1>
-      <Button startContent={<FaPhone />} className="my-2 w-[190px] h-10">
+      {/* <Button startContent={<FaPhone />} className="my-2 w-[190px] h-10">
         Phone Number
-      </Button>
+      </Button> */}
       <Button
         onClick={handleSignInWithGoogle}
         className="my-2 w-[190px] h-10"
@@ -66,7 +66,7 @@ export default function StyledFirebaseAuth() {
           ></Image>
         }
       >
-        Google{" "}
+        Google
       </Button>
       <LoadingIndicator isOpen={loading} onClose={() => setLoading(false)} />
     </div>

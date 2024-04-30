@@ -5,7 +5,6 @@ import {
   NavbarContent,
   NavbarItem,
   NavbarMenuItem,
-  Link,
   NavbarMenu,
   NavbarMenuToggle,
   Dropdown,
@@ -13,6 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import Logo from "../_components/logo";
@@ -47,8 +47,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, [user, userStore.user, router]);
 
   async function handleLogout() {
-    // await signOut(auth);
-    // router.replace("/");
+    await signOut(auth);
+    router.replace("/");
   }
   return (
     <>
@@ -98,7 +98,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     </NavbarItem>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem key="profile">Check Profile</DropdownItem>
+                    <DropdownItem
+                      key="profile"
+                      onClick={() => router.push("/dashboard/profile")}
+                    >
+                      Check Profile
+                    </DropdownItem>
                     <DropdownItem key="logout" onClick={handleLogout}>
                       Logout
                     </DropdownItem>
@@ -120,36 +125,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </NavbarContent>
 
         <NavbarMenu>
-          {menuItems.map((item, index) => {
-            if (item.label === "Profile") {
-              return (
-                <Dropdown key={`${item.label}-${index}`}>
-                  <DropdownTrigger>
-                    <NavbarMenuItem>{item.label}</NavbarMenuItem>
-                  </DropdownTrigger>
-                  <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem key="new">New file</DropdownItem>
-                    <DropdownItem key="copy">Copy link</DropdownItem>
-                    <DropdownItem key="edit">Edit file</DropdownItem>
-                    <DropdownItem
-                      key="delete"
-                      className="text-danger"
-                      color="danger"
-                    >
-                      Delete file
-                    </DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              );
-            }
-            return (
-              <NavbarMenuItem key={`${item.label}-${index}`}>
-                <Link className="w-full" href={item.href} size="lg">
-                  {item.label}
-                </Link>
-              </NavbarMenuItem>
-            );
-          })}
+          <NavbarMenuItem>
+            <Link className="w-full" href="/dashboard">
+              Home
+            </Link>
+          </NavbarMenuItem>
+          <NavbarMenuItem>
+            <Link className="w-full" href="/dashboard/profile">
+              Profile
+            </Link>
+          </NavbarMenuItem>
+          <NavbarMenuItem onClick={handleLogout}>Logout</NavbarMenuItem>
         </NavbarMenu>
         <NavbarContent as="div" justify="end">
           {/*  */}
