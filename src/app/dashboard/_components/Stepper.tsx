@@ -1,11 +1,5 @@
 "use client";
-import {
-  useState,
-  useEffect,
-  useRef,
-  FormHTMLAttributes,
-  FormEvent,
-} from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Pagination,
   Button,
@@ -22,7 +16,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Message } from "ai/react";
 import { useAssistant } from "ai/react";
-import MessageItem from "../spain/_components/message_item";
+import MessageItem from "../_components/message_item";
 
 export default function Stepper() {
   const [currentPage, setCurrentPage] = useState(1);
