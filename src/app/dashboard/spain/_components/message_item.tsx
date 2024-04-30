@@ -24,7 +24,7 @@ export default function MessageItem({ message }: MessageType) {
       >
         {message.role === "user" && <Avatar name="T.AI" />}
         <span className="mx-2">
-          <strong>{`${message.role === "assistant" ? "Themos" : "Usuario"}`}</strong>
+          <strong>{`${message.role === "assistant" ? "Themos" : "User"}`}</strong>
         </span>
         {message.role === "assistant" && <Avatar name="T.AI" />}
       </div>

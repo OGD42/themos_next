@@ -24,10 +24,9 @@ export default function StyledFirebaseAuth() {
 
   useEffect(() => {
     const observer = onAuthStateChanged(auth, (u) => {
-      console.log("user", u);
       if (u) {
         userStore.setUser(u);
-        router.replace("/dashboard");
+        router.push("/dashboard");
       } else {
         console.log("no user");
       }

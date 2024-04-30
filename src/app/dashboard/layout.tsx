@@ -12,15 +12,15 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Button,
 } from "@nextui-org/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import Logo from "../_components/logo";
 import useGetAuth from "@/api/hooks/useGetAuth";
 import store from "@/api/store";
 import { signOut } from "firebase/auth";
 import { auth } from "@/api/firebase";
+import { useEffect } from "react";
 
 const menuItems = [
   {
@@ -36,13 +36,19 @@ const menuItems = [
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const user = useGetAuth();
-  const userStore = store().user;
+  const userStore = store();
   const router = useRouter();
-  if (!user && !userStore) router.replace("/");
+
+  useEffect(() => {
+    function handleAccess() {
+      if (!user && !userStore.user) router.replace("/");
+    }
+    handleAccess();
+  }, [user, userStore.user, router]);
 
   async function handleLogout() {
-    await signOut(auth);
-    router.replace("/");
+    // await signOut(auth);
+    // router.replace("/");
   }
   return (
     <>
@@ -86,6 +92,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <NavbarItem
                       key={`${item.label}-${key}`}
                       isActive={pathname === item.href}
+                      className="cursor-pointer"
                     >
                       {item.label}
                     </NavbarItem>

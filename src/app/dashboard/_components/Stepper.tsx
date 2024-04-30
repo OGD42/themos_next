@@ -1,5 +1,11 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  FormHTMLAttributes,
+  FormEvent,
+} from "react";
 import {
   Pagination,
   Button,
@@ -22,39 +28,49 @@ export default function Stepper() {
   const [currentPage, setCurrentPage] = useState(1);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const sendRef = useRef<HTMLFormElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors, isDirty, isValid },
   } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
 
-  async function _handleSubmit(data: FormType) {
-    //
-    setLoading(true);
-    setQuery(
-      () =>
-        `Hi Themos. My name is ${data.name}. My education level is ${data.educationLevel} and I'm from ${data.country}. I would like to move to Canada to live, here is a little bit more information about my case: ${data.description}. Would you tell me which is the best visa to move to Canada?`,
-    );
-  }
+  const {
+    status,
+    messages,
+    input,
+    submitMessage,
+    handleInputChange,
+    error,
+    setInput,
+  } = useAssistant({
+    api: "/api/assistant",
+    body: {
+      country: "canada",
+    },
+  });
 
-  const { status, messages, input, submitMessage, handleInputChange, error } =
-    useAssistant({
-      api: "/api/assistant",
-      body: {
-        country: "canada",
-      },
-    });
-  const inputRef = useRef<HTMLInputElement>(null);
+  const _handleSubmit = async (data: FormType) => {
+    setLoading(true);
+    const composedQuery = `Hi Themos. My name is ${data.name}. My education level is ${data.educationLevel} and I'm from ${data.country}. I would like to move to Canada to live, here is a little bit more information about my case: ${data.description}. Would you tell me which is the best visa to move to Canada?`;
+    setInput(composedQuery);
+    setQuery(composedQuery);
+    setTimeout(() => {
+      setLoading(false);
+      console.log("clicky");
+      sendRef.current?.dispatchEvent(new Event("submit"));
+    }, 500);
+  };
 
   useEffect(() => {
     if (status === "awaiting_message") {
       inputRef.current?.focus();
     }
   }, [status]);
-
   return (
     <>
       <div className="flex flex-col gap-5 p-10">
@@ -82,7 +98,7 @@ export default function Stepper() {
             <Input
               placeholder="What country are you from?"
               label="Country"
-              {...(register("country"), { required: true })}
+              {...register("country", { required: true })}
               className="my-2"
               isInvalid={errors.country && !!errors.country.message}
               errorMessage={errors.country?.message}
@@ -108,7 +124,7 @@ export default function Stepper() {
             <Textarea
               placeholder="Describe us your personal case"
               label="Give us more details"
-              {...register("description")}
+              {...register("description", { required: true })}
               className="my-2"
               isInvalid={errors.description && !!errors.description.message}
               errorMessage={errors.description?.message}
@@ -140,10 +156,10 @@ export default function Stepper() {
             </Button>
             <Button
               size="sm"
-              variant={!isDirty || !isValid ? "light" : "solid"}
+              variant={!isValid ? "light" : "solid"}
               type="submit"
               color={"primary"}
-              isDisabled={!isDirty || !isValid}
+              isDisabled={!isValid}
               className={`${currentPage === 4 ? "" : "hidden"}`}
             >
               Generate response
@@ -153,51 +169,13 @@ export default function Stepper() {
         <Modal isOpen={loading}>
           <ModalContent>
             <ModalHeader className="flex flex-col gap-1">
-              Cargando...
+              Loading...
             </ModalHeader>
             <ModalBody>
               <CircularProgress size="lg" aria-label="Loading..." />
             </ModalBody>
           </ModalContent>
         </Modal>
-        {!loading && query.length > 0 && (
-          <div className="stretch mx-auto flex w-full max-w-md flex-col py-24">
-            {error != null && (
-              <div className="relative rounded-md bg-red-500 px-6 py-4 text-white">
-                <span className="block sm:inline">
-                  Error: {(error as Error).toString()}
-                </span>
-              </div>
-            )}
-
-            {messages.length > 0 &&
-              messages.map((m: Message) => (
-                <MessageItem key={m.id} message={m} />
-              ))}
-
-            {status === "in_progress" && (
-              <div className="mb-8 h-8 w-full max-w-md animate-pulse rounded-lg bg-gray-300 p-2 dark:bg-gray-600" />
-            )}
-
-            <form
-              onSubmit={submitMessage}
-              className="flex flex-row items-center"
-            >
-              <Input
-                ref={inputRef}
-                multiple
-                disabled={status !== "awaiting_message"}
-                // className="fixed bottom-0 mb-8 w-full max-w-md rounded border border-gray-300 p-2 shadow-xl"
-                value={input}
-                placeholder="Descríbenos tu caso"
-                onChange={handleInputChange}
-              />
-              <Button className="mx-2" type="submit" color="default">
-                Enviar
-              </Button>
-            </form>
-          </div>
-        )}
       </div>
       {!loading && query.length > 0 && (
         <div className="stretch mx-auto flex w-full max-w-md flex-col py-24">
@@ -218,18 +196,23 @@ export default function Stepper() {
             <div className="mb-8 h-8 w-full max-w-md animate-pulse rounded-lg bg-gray-300 p-2 dark:bg-gray-600" />
           )}
 
-          <form onSubmit={submitMessage} className="flex flex-row items-center">
-            <Input
+          <form
+            onSubmit={submitMessage}
+            className="flex flex-row items-center"
+            ref={sendRef}
+          >
+            <Textarea
               ref={inputRef}
               multiple
+              minRows={2}
               disabled={status !== "awaiting_message"}
               // className="fixed bottom-0 mb-8 w-full max-w-md rounded border border-gray-300 p-2 shadow-xl"
               value={input}
-              placeholder="Descríbenos tu caso"
+              placeholder="Describe us your case"
               onChange={handleInputChange}
             />
-            <Button className="mx-2" type="submit" color="default">
-              Enviar
+            <Button className="mx-2 px-8" type="submit" color="default">
+              Generate answer
             </Button>
           </form>
         </div>
