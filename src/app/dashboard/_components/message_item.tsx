@@ -2,6 +2,7 @@
 import type { Message } from "ai/react";
 import { Avatar } from "@nextui-org/react";
 import { ReactTyped } from "react-typed";
+import store from "@/api/store";
 
 type MessageData = {
   description: string;
@@ -12,17 +13,22 @@ type MessageType = {
 };
 
 export default function MessageItem({ message }: MessageType) {
+  const useStore = store();
   return (
     <div
       className="whitespace-pre-wrap"
       style={{ color: roleToColorMap[message.role] }}
     >
       <div
-        className={`flex items-center ${message.role === "assistant" ? "justify-end" : "justify-start"}`}
+        className={`flex items-center ${
+          message.role === "assistant" ? "justify-end" : "justify-start"
+        }`}
       >
-        {message.role === "user" && <Avatar name="T.AI" />}
+        {message.role === "user" && <Avatar name="U" />}
         <span className="mx-2">
-          <strong>{`${message.role === "assistant" ? "Themos" : "User"}`}</strong>
+          <strong>{`${
+            message.role === "assistant" ? "Themos" : useStore.user?.displayName
+          }`}</strong>
         </span>
         {message.role === "assistant" && <Avatar name="T.AI" />}
       </div>

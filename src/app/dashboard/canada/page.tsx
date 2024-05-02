@@ -1,23 +1,23 @@
 "use client";
-import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
+import { useState, useMemo } from "react";
+import {
+  Tabs,
+  Tab,
+  Card,
+  CardBody,
+  Listbox,
+  ListboxItem,
+} from "@nextui-org/react";
 import Chat from "../_components/chat";
-// import cities from "../_data/cities";
-// import GuidedChat from "../_components/guided_chat";
 import Stepper from "../_components/Stepper";
+import { ListboxWrapper } from "../_components/ListboxWrapper";
 
-export default function Spain() {
+export default function Canada() {
   return (
     <div className="my-10 w-full p-10 z-10">
       <div className="flex w-full flex-col">
         <h1 className="my-2">Canada</h1>
         <Tabs aria-label="Options">
-          <Tab key="guide" title="Guide me">
-            <Card>
-              <CardBody>
-                <Stepper />
-              </CardBody>
-            </Card>
-          </Tab>
           <Tab key="free" title="Ask Freely">
             <Card>
               <CardBody className="text-white">
@@ -25,10 +25,18 @@ export default function Spain() {
               </CardBody>
             </Card>
           </Tab>
-
+          <Tab key="guide" title="Guide me">
+            <Card>
+              <CardBody>
+                <Stepper />
+              </CardBody>
+            </Card>
+          </Tab>
           <Tab key="history" title="History">
             <Card>
-              <CardBody>Soon Available!</CardBody>
+              <CardBody>
+                <ListboxWrapper />
+              </CardBody>
             </Card>
           </Tab>
         </Tabs>

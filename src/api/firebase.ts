@@ -24,7 +24,7 @@ const firebaseConfig = {
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 export const auth = getAuth(app);
 export const analytics = isSupported().then((yes) =>
-  yes ? getAnalytics(app) : null,
+  yes ? getAnalytics(app) : null
 );
 export const database = getFirestore(app);
 export const storage = getStorage(app);

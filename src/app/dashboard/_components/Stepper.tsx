@@ -53,11 +53,6 @@ export default function Stepper() {
     const composedQuery = `Hi Themos. My name is ${data.name}. My education level is ${data.educationLevel} and I'm from ${data.country}. I would like to move to Canada to live, here is a little bit more information about my case: ${data.description}. Would you tell me which is the best visa to move to Canada?`;
     setInput(composedQuery);
     setQuery(composedQuery);
-    setTimeout(() => {
-      setLoading(false);
-      console.log("clicky");
-      sendRef.current?.dispatchEvent(new Event("submit"));
-    }, 500);
   };
 
   useEffect(() => {

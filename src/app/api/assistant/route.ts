@@ -17,14 +17,12 @@ const homeTemperatures = {
 };
 
 export async function POST(req: Request) {
-  // Parse the request body
   const body = await req.json();
   const input: {
     country: "canada" | "spain" | "usa" | "germany";
     threadId: string | null;
     message: string;
   } = body;
-  console.log("country", input.country);
 
   const ASSISTANT: { [key: string]: string } = {
     canada: process.env.CANADA_ASSISTANT_ID as string,
@@ -44,7 +42,7 @@ export async function POST(req: Request) {
     { threadId, messageId: createdMessage.id },
     async ({ forwardStream, sendDataMessage }) => {
       // Run the assistant on the thread
-      const runStream = openai.beta.threads.runs.createAndStream(threadId, {
+      const runStream = openai.beta.threads.runs.stream(threadId, {
         assistant_id:
           ASSISTANT[input.country] ??
           (() => {
@@ -105,20 +103,20 @@ export async function POST(req: Request) {
 
                 default:
                   throw new Error(
-                    `Unknown tool call function: ${toolCall.function.name}`,
+                    `Unknown tool call function: ${toolCall.function.name}`
                   );
               }
-            },
+            }
           );
 
         runResult = await forwardStream(
           openai.beta.threads.runs.submitToolOutputsStream(
             threadId,
             runResult.id,
-            { tool_outputs },
-          ),
+            { tool_outputs }
+          )
         );
       }
-    },
+    }
   );
 }
