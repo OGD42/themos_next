@@ -49,7 +49,7 @@ export default function StyledFirebaseAuth() {
   }
   return (
     <div className="flex flex-col">
-      <h1>Sign In with:</h1>
+      <h1>Sign-In here:</h1>
       {/* <Button startContent={<FaPhone />} className="my-2 w-[190px] h-10">
         Phone Number
       </Button> */}
