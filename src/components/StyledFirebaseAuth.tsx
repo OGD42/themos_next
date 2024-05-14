@@ -6,6 +6,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged,
+  browserSessionPersistence,
 } from "firebase/auth";
 import { auth } from "@/api/firebase";
 import { useState, useEffect } from "react";
@@ -39,6 +40,7 @@ export default function StyledFirebaseAuth() {
   async function handleSignInWithGoogle() {
     try {
       setLoading(true);
+      await auth.setPersistence(browserSessionPersistence);
       const result = await signInWithPopup(auth, provider);
       setLoading(false);
       userStore.setUser(result.user);

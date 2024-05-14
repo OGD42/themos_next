@@ -11,6 +11,8 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   const body = await req.json();
+  // console.log("request data", req.headers);
+  console.log("request auth", req.headers.get("__session"));
   try {
     // Create a thread if needed
     const threadId = body.threadId;

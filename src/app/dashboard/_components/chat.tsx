@@ -88,6 +88,15 @@ export default function Chat({ country, thread }: ChatType) {
     manageAddMessages();
   }, [messages, threadId, messagesLength, status]);
 
+  async function _handleSubmit() {
+    await fetch("/api/messages", {
+      method: "POST",
+      body: JSON.stringify({
+        threadId: "",
+      }),
+    });
+    return true;
+  }
   return (
     <div className="stretch mx-auto flex w-full max-w-md flex-col py-24">
       {error != null && (
@@ -106,7 +115,7 @@ export default function Chat({ country, thread }: ChatType) {
       )}
 
       <form
-        onSubmit={submitMessage}
+        onSubmit={_handleSubmit}
         className="flex flex-row items-center flex-wrap lg:flex-nowrap"
       >
         <Textarea
