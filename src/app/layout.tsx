@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={inter.className}>
         <Providers>
-          <main className="flex min-h-screen flex-col items-center text-white">
+          <main className="flex min-h-screen flex-col items-center text-white overflow-hidden">
             {children}
             <BackgroundBeams />
           </main>
