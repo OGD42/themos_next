@@ -29,13 +29,32 @@ export async function POST(req: Request) {
     spain: process.env.SPAIN_ASSISTANT_ID as string,
   };
 
+  const response = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "system",
+        content:
+          "You will be provided with statements, and your task is to convert them to standard English.",
+      },
+      {
+        role: "user",
+        content: input.message,
+      },
+    ],
+    temperature: 0.7,
+    max_tokens: 64,
+    top_p: 1,
+  });
+
+  const content = response.choices[0].message.content || "";
   // Create a thread if needed
   const threadId = input.threadId ?? (await openai.beta.threads.create({})).id;
 
   // Add a message to the thread
   const createdMessage = await openai.beta.threads.messages.create(threadId, {
     role: "user",
-    content: input.message,
+    content: content,
   });
 
   return AssistantResponse(
