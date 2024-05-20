@@ -8,7 +8,7 @@ import { Card, CardBody } from "@nextui-org/react";
 const QUESTIONS = [
   "I want to move to Canada to study, how can I do that?",
   "I want to move to Canada to build a Startup, what's the best visa for me?",
-  "If I move to Canada, can I bring my pets?",
+  "Can I bring my pets if I move to Canada?",
   "Can I move to Spain if I work remote in America?",
   "Can I move to Mexico if I work remote back home?",
 ];
