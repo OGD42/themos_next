@@ -17,7 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { Message } from "ai/react";
 import { useAssistant } from "ai/react";
 import MessageItem from "./message_item";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function Stepper() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,6 +26,7 @@ export default function Stepper() {
   const sendRef = useRef<HTMLFormElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const t = useTranslations("Migrate_To");
+  const locale = useLocale();
 
   const {
     register,
@@ -47,12 +48,19 @@ export default function Stepper() {
     api: "/api/assistant",
     body: {
       country: "canada",
+      locale,
     },
   });
 
   const _handleSubmit = async (data: FormType) => {
     setLoading(true);
-    const composedQuery = `Hi Themos. My name is ${data.name}. My education level is ${data.educationLevel} and I'm from ${data.country}. I would like to move to Canada to live, here is a little bit more information about my case: ${data.description}. Would you tell me which is the best visa to move to Canada?`;
+    let composedQuery;
+    if (locale === "en") {
+      composedQuery = `Hi Themos. My name is ${data.name}. My education level is ${data.educationLevel} and I'm from ${data.country}. I would like to move to Canada to live, here is a little bit more information about my case: ${data.description}. Would you tell me which is the best visa to move to Canada?`;
+    } else {
+      composedQuery = `Hola Themos. Mi nombre es ${data.name}. Mi nivel educativo es ${data.educationLevel} y soy de ${data.country}. Me gustaría migrar a Canada para vivir, esto es un poco más de información acerca de mi caso de migración: ${data.description}. Me podrías decir cuál es la mejor visa para migrar a Canada?`;
+    }
+
     setInput(composedQuery);
     setQuery(composedQuery);
   };

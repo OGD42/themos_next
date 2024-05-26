@@ -13,8 +13,6 @@ type Props = {
 export default function Dashboard({ params: { locale } }: Props) {
   unstable_setRequestLocale(locale);
   const t = useTranslations("Dashboard");
-  console.warn("CONTRAINS", t.raw("dashboard_canada_constrain"));
-  console.warn("PROS__", t.raw("dashboard_canada_pros"));
 
   const LOCATIONS: CityCardTypes[] = [
     {

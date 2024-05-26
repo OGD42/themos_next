@@ -14,7 +14,7 @@ import {
   updateDoc,
   doc,
 } from "firebase/firestore";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 type ChatType = {
   country: "canada" | "spain" | "usa" | "germany";
@@ -22,6 +22,7 @@ type ChatType = {
 };
 export default function Chat({ country, thread }: ChatType) {
   const useStore = store();
+  const locale = useLocale();
   const {
     status,
     messages,
@@ -31,10 +32,11 @@ export default function Chat({ country, thread }: ChatType) {
     error,
     threadId,
   } = useAssistant({
-    api: "/api/assistant",
+    api: `/${locale}/api/assistant`,
     threadId: thread,
     body: {
       country,
+      locale,
     },
   });
   const t = useTranslations("Migrate_To");

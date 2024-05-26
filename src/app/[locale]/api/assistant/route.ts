@@ -14,6 +14,7 @@ export async function POST(req: Request) {
     country: "canada" | "spain" | "usa" | "germany";
     threadId: string | null;
     message: string;
+    locale: string;
   } = body;
 
   const ASSISTANT: { [key: string]: string } = {
@@ -21,33 +22,22 @@ export async function POST(req: Request) {
     spain: process.env.SPAIN_ASSISTANT_ID as string,
   };
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
-    messages: [
-      {
-        role: "system",
-        content:
-          "You will be provided with statements, and your task is to convert them to standard English.",
-      },
-      {
-        role: "user",
-        content: input.message,
-      },
-    ],
-    temperature: 0.7,
-    max_tokens: 64,
-    top_p: 1,
+  const response = await handleLanguage({
+    message: body.message,
+    locale: body.locale,
   });
 
   const content = response.choices[0].message.content || "";
-  console.log("content", content);
   // Create a thread if needed
   const threadId = input.threadId ?? (await openai.beta.threads.create({})).id;
 
   // Add a message to the thread
   const createdMessage = await openai.beta.threads.messages.create(threadId, {
     role: "user",
-    content: content,
+    content:
+      body.locale === "en"
+        ? content
+        : `${content}. Return the response in standard Spanish`,
   });
 
   return AssistantResponse(
@@ -139,4 +129,75 @@ const homeTemperatures = {
   "living room": 21,
   kitchen: 22,
   bathroom: 23,
+};
+
+async function handleLanguage({
+  message,
+  locale,
+}: {
+  message: string;
+  locale: string;
+}) {
+  if (locale === "en") {
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: messages.english,
+        },
+        {
+          role: "user",
+          content: message,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 64,
+      top_p: 1,
+    });
+    return response;
+  } else {
+    const grammarCheck = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: messages.spanish,
+        },
+        {
+          role: "user",
+          content: message,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 64,
+      top_p: 1,
+    });
+    const fixedMessage = grammarCheck.choices[0].message.content || "";
+    const response = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You will be provided with a sentence in Spanish, and your task is to translate it into English.",
+        },
+        {
+          role: "user",
+          content: fixedMessage,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 64,
+      top_p: 1,
+    });
+    return response;
+  }
+}
+
+const messages = {
+  spanish:
+    "You will be provided with statements in Spanish, and your task is to convert them to standard Spanish.",
+  english:
+    "You will be provided with statements, and your task is to convert them to standard English.",
 };
