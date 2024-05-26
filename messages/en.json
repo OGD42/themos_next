@@ -1,0 +1,75 @@
+{
+    "Index": {
+        "themos_description": "is your AI migration assistant.",
+        "home_title": "Discover your ideal visa or residence – tailored guidance to match your unique needs for a smooth relocation.",
+        "home_ask_title": "What can I ask to Themos?",
+        "home_sign_in_here": "Sign-In here:",
+        "home_question1": "I want to move to Canada to study, how can I do that?",
+        "home_question2": "I want to move to Canada to build a Startup, what's the best visa for me?",
+        "home_question3": "Can I bring my pets if I move to Canada?",
+        "home_question4": "Can I move to Spain if I work remote in America?",
+        "home_question5": "Can I move to Mexico if I work remote back home?"
+    },
+    "Menu": {
+        "menu_home_label": "Home",
+        "menu_profile_label": "Profile",
+        "menu_check_profile_label": "Check Profile",
+        "menu_logout_label": "Logout",
+        "menu_select_language": "Select language"
+    },
+    "Dashboard": {
+        "dashboard_migrate_to_label": "I would like to migrate to:",
+
+        "_canada_start": "start",
+        "dashboard_canada_label": "Canada",
+        "dashboard_canada_citizenship_label": "Citizenship: 5 to 10 years.",
+        "dashboard_canada_residence_label":"Permanent Residence: 2 years.",
+        "dashboard_canada_pros": "💵 High salaries for doctors, engineers and nurses.🏥 Free Healthcare.🚈 Public Services.👮🏻‍♂️ Safe.",
+        "dashboard_canada_cons": "High Taxes.High cost of living.Taxed extra hours.",
+        "_canada_end": "end",
+
+        "_USA_start": "start",
+        "dashboard_usa_label": "USA",
+        "dashboard_usa_citizenship_label": "Citizenship: 10 years.",
+        "dashboard_usa_residence_label":"Available Soon",
+        "dashboard_usa_pros":  "💵 High salaries for doctors, engineers, nurses, lawyers and entrepreneurs.🤑 Great to make money.🖥️ Great to build businesses.👷🏻‍♂️ Business friendly people.🦅 Freedom",
+        "dashboard_usa_cons": "Expensive Healthcare.Some states have high taxes.Not the safest.",
+        "_USA_end": "end",
+
+        "_spain_start": "start",
+        "dashboard_spain_label": "Spain",
+        "dashboard_spain_citizenship_label": "Citizenship: 2 to 10 years.",
+        "dashboard_spain_residence_label":"Available Soon",
+        "dashboard_spain_pros":  "🍷 Good work/life balance.🏥 Free Healthcare.🚈 Public Services.👮🏻‍♂️ Safe.",
+        "dashboard_spain_cons": "High Taxes.Horrible for businesses.Bad economy.Unemployment",
+        "_spain_end": "end",
+
+        "_germany_start": "start",
+        "dashboard_germany_label": "Germany",
+        "dashboard_germany_citizenship_label": "Not Available.",
+        "dashboard_germany_residence_label":"Available Soon",
+        "dashboard_germany_pros":   "🍷 Good work/life balance.🏥 Free Healthcare.🚈 Public Services.",
+        "dashboard_germany_cons": "Hard language.High cost of living.High Taxes.Unfriendly people.",
+        "_germany_end": "end"
+    },
+    "Migrate_To": {
+        "migrate_canada_label": "Canada",
+        "migrate_ask_label": "Ask Freely",
+        "migrate_describe_case_label": "Describe us your case",
+        "migrate_generate_answer_label":"Generate answer",
+        "migrate_guide_me_label": "Guide Me",
+        "migrate_step_label": "Step",
+        "migrate_name_label": "What's your name?",
+        "migrate_name_title_label": "Name",
+        "migrate_country_label": "Country",
+        "migrate_country_from_label": "What country are you from?",
+        "migrate_education_label": "Education Level",
+        "migrate_describe_label":"Why would you like to move to Canada? Explain us in detail your case.",
+        "migrate_details_label":"Give us more details",
+        "migrate_describe_personal_case_label": "Describe us your personal case",
+        "migrate_back_button_label": "Back",
+        "migrate_next_button_label": "Next",
+        "migrate_generate_response_button_label": "Generate Response",
+        "migrate_history_label": "History"
+    }
+}

@@ -8,14 +8,6 @@ const openai = new OpenAI({
 
 export const dynamic = "force-dynamic";
 
-const homeTemperatures = {
-  bedroom: 20,
-  "home office": 21,
-  "living room": 21,
-  kitchen: 22,
-  bathroom: 23,
-};
-
 export async function POST(req: Request) {
   const body = await req.json();
   const input: {
@@ -48,6 +40,7 @@ export async function POST(req: Request) {
   });
 
   const content = response.choices[0].message.content || "";
+  console.log("content", content);
   // Create a thread if needed
   const threadId = input.threadId ?? (await openai.beta.threads.create({})).id;
 
@@ -139,3 +132,11 @@ export async function POST(req: Request) {
     }
   );
 }
+
+const homeTemperatures = {
+  bedroom: 20,
+  "home office": 21,
+  "living room": 21,
+  kitchen: 22,
+  bathroom: 23,
+};

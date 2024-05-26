@@ -14,6 +14,7 @@ import {
   updateDoc,
   doc,
 } from "firebase/firestore";
+import { useTranslations } from "next-intl";
 
 type ChatType = {
   country: "canada" | "spain" | "usa" | "germany";
@@ -36,6 +37,7 @@ export default function Chat({ country, thread }: ChatType) {
       country,
     },
   });
+  const t = useTranslations("Migrate_To");
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
@@ -116,7 +118,7 @@ export default function Chat({ country, thread }: ChatType) {
           disabled={status !== "awaiting_message"}
           // className="fixed bottom-0 mb-8 w-full max-w-md rounded border border-gray-300 p-2 shadow-xl"
           value={input}
-          placeholder="Describe us your case"
+          placeholder={t("migrate_describe_case_label")}
           onChange={handleInputChange}
         />
         <Button
@@ -124,7 +126,7 @@ export default function Chat({ country, thread }: ChatType) {
           type="submit"
           color="default"
         >
-          Generate answer
+          {t("migrate_generate_answer_label")}
         </Button>
       </form>
     </div>

@@ -21,23 +21,27 @@ import store from "@/api/store";
 import { signOut } from "firebase/auth";
 import { auth } from "@/api/firebase";
 import { useEffect } from "react";
-
-const menuItems = [
-  {
-    label: "Home",
-    href: "/dashboard",
-  },
-  {
-    label: "Profile",
-    href: "/dashboard/profile",
-  },
-];
+import { useLocale, useTranslations } from "next-intl";
+import LanguageSelector from "../_components/language-selector";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const user = useGetAuth();
   const userStore = store();
   const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations("Menu");
+
+  const menuItems = [
+    {
+      label: t("menu_home_label"),
+      href: "/dashboard",
+    },
+    {
+      label: t("menu_profile_label"),
+      href: "/dashboard/profile",
+    },
+  ];
 
   useEffect(() => {
     function handleAccess() {
@@ -102,10 +106,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       key="profile"
                       onClick={() => router.push("/dashboard/profile")}
                     >
-                      Check Profile
+                      {t("menu_check_profile_label")}
                     </DropdownItem>
                     <DropdownItem key="logout" onClick={handleLogout}>
-                      Logout
+                      {t("menu_logout_label")}
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
@@ -116,7 +120,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 key={`${item.label}-${key}`}
                 isActive={pathname === item.href}
               >
-                <Link color="foreground" href={item.href}>
+                <Link color="foreground" href={`/${locale}/${item.href}`}>
                   {item.label}
                 </Link>
               </NavbarItem>
@@ -127,18 +131,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <NavbarMenu>
           <NavbarMenuItem>
             <Link className="w-full" href="/dashboard">
-              Home
+              {t("menu_home_label")}
             </Link>
           </NavbarMenuItem>
           <NavbarMenuItem>
             <Link className="w-full" href="/dashboard/profile">
-              Profile
+              {t("menu_profile_label")}
             </Link>
           </NavbarMenuItem>
           <NavbarMenuItem onClick={handleLogout}>Logout</NavbarMenuItem>
         </NavbarMenu>
-        <NavbarContent as="div" justify="end">
-          {/*  */}
+        <NavbarContent justify="end">
+          <NavbarItem className="min-w-[250px]">
+            <LanguageSelector />
+          </NavbarItem>
         </NavbarContent>
       </Navbar>
       {children}

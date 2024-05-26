@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@nextui-org/react";
-import { FaPhone } from "react-icons/fa6";
+// import { FaPhone } from "react-icons/fa6";
 import Image from "next/image";
 import {
   GoogleAuthProvider,
@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import LoadingIndicator from "./LoadingIndicator";
 import store from "@/api/store";
 import { useRouter } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 
 const provider = new GoogleAuthProvider();
 provider.addScope("email");
@@ -22,14 +23,16 @@ export default function StyledFirebaseAuth() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const userStore = store();
+  const t = useTranslations("Index");
+  const locale = useLocale();
 
   useEffect(() => {
     const observer = onAuthStateChanged(auth, (u) => {
       if (u) {
         userStore.setUser(u);
-        router.push("/dashboard");
+        router.push(`/${locale}/dashboard`);
       } else {
-        console.log("no user");
+        //
       }
     });
     return () => {
@@ -44,14 +47,14 @@ export default function StyledFirebaseAuth() {
       const result = await signInWithPopup(auth, provider);
       setLoading(false);
       userStore.setUser(result.user);
-      router.replace("/dashboard");
+      router.replace(`/${locale}/dashboard`);
     } catch (error) {
       console.log("error", error);
     }
   }
   return (
     <div className="flex flex-col">
-      <h1>Sign-In here:</h1>
+      <h1>{t("home_sign_in_here")}</h1>
       {/* <Button startContent={<FaPhone />} className="my-2 w-[190px] h-10">
         Phone Number
       </Button> */}

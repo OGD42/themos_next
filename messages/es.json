@@ -1,0 +1,75 @@
+{
+    "Index": {
+        "themos_description": "Es tu assistente de migración IA.",
+        "home_title": "Descubre tu visa o residencia ideal – guia hecha a tu medida para una fácil reubicación.",
+        "home_ask_title": "Que le puedo preguntar a Themos?",
+        "home_sign_in_here": "Entra aquí:",
+        "home_question1": "Me quiero mudar a Canada para estudiar, ¿cómo puedo hacerlo?",
+        "home_question2": "Me quiero mover a Canada para construir una Startup, ¿cuál es la mejor visa para mi?",
+        "home_question3": "¿Puedo traer mis mascotas si me mudo a Canada?",
+        "home_question4": "Me puedo mudar a España si trabajo remoto desde mi país?",
+        "home_question5": "Me puedo mudar a México si trabajo remoto desde mi país?"
+    },
+    "Menu": {
+        "menu_home_label": "Inicio",
+        "menu_profile_label": "Perfil",
+        "menu_check_profile_label": "Ver Perfil",
+        "menu_logout_label": "Salir",
+        "menu_select_language": "Seleccionar lenguaje"
+    },
+    "Dashboard": {
+        "dashboard_migrate_to_label": "Me gustaría migrar a:",
+
+        "_canada_start": "start",
+        "dashboard_canada_label": "Canada",
+        "dashboard_canada_citizenship_label": "Ciudadanía: de 5 a 10 años.",
+        "dashboard_canada_residence_label":"Residencia permanente: 2 años.",
+        "dashboard_canada_pros": "💵 Salarios altos para doctores, ingenieros y enfermeras.🏥 Salub pública.🚈 Servicios públicos.👮🏻‍♂️ Seguro.",
+        "dashboard_canada_cons": "Impuestos altos.Altos costos de vida.Impuestos a horas extras.",
+        "_canada_end": "end",
+
+        "_USA_start": "start",
+        "dashboard_usa_label": "Estados Unidos",
+        "dashboard_usa_citizenship_label": "Ciudadanía: 10 años.",
+        "dashboard_usa_residence_label":"Pronto Disponible",
+        "dashboard_usa_pros":  "💵 Salarios altos para doctores, ingenieros, enfermeras, abogados y emprendedores.🤑 Excelente para hacer dinero.🖥️ Excelente para construir negocios.👷🏻‍♂️ Amigables con personas de negocios.🦅 Freedom!",
+        "dashboard_usa_cons": "Sistemas de salud son caros.Algunos estados tienen impuestos altos.Tiene lugares inseguros.",
+        "_USA_end": "end",
+
+        "_spain_start": "start",
+        "dashboard_spain_label": "España",
+        "dashboard_spain_citizenship_label": "Ciudadanía: de 2 a 10 años.",
+        "dashboard_spain_residence_label":"Pronto disponible!",
+        "dashboard_spain_pros":  "🍷 Buen balance vida/trabajo.🏥 Salud pública.🚈 Servicios públicos.👮🏻‍♂️ Seguro.",
+        "dashboard_spain_cons": "Impuestos altos.Horrible para negocios.Mala economía.Desempleo",
+        "_spain_end": "end",
+
+        "_germany_start": "start",
+        "dashboard_germany_label": "Alemania",
+        "dashboard_germany_citizenship_label": "No Disponible.",
+        "dashboard_germany_residence_label":"Pronto disponible!",
+        "dashboard_germany_pros":  "🍷 Buen balance vida/trabajo.🏥 Salud pública.🚈 Servicios públicos.",
+        "dashboard_germany_cons": "Lenguaje difícil.Altos costos de vida.Impuestos altos.Gente poco amigable",
+        "_germany_end": "end"
+    },
+     "Migrate_To": {
+        "migrate_canada_label": "Canada",
+        "migrate_ask_label": "Preguntar Libremente",
+        "migrate_describe_case_label": "Describenos tu caso",
+        "migrate_generate_answer_label":"Generar respuesta",
+        "migrate_guide_me_label": "Guíame",
+        "migrate_step_label": "Paso",
+        "migrate_name_label": "¿Cuál es tu nombre?",
+        "migrate_name_title_label": "Nombre",
+        "migrate_country_label": "País",
+        "migrate_country_from_label": "¿De que país eres?",
+        "migrate_education_label": "Nivel educativo",
+        "migrate_describe_label":"¿Por que te gustaría mudarte a Canada? Explicanos tu caso a detalle.",
+        "migrate_details_label":"Danos mas detalles",
+        "migrate_describe_personal_case_label": "Describenos tu caso personal",
+        "migrate_back_button_label": "Atras",
+        "migrate_next_button_label": "Siguiente",
+        "migrate_generate_response_button_label": "Generar respuesta",
+        "migrate_history_label": "Historial"
+    }
+}

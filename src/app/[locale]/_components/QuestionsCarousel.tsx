@@ -4,14 +4,7 @@ import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { Card, CardBody } from "@nextui-org/react";
-
-const QUESTIONS = [
-  "I want to move to Canada to study, how can I do that?",
-  "I want to move to Canada to build a Startup, what's the best visa for me?",
-  "Can I bring my pets if I move to Canada?",
-  "Can I move to Spain if I work remote in America?",
-  "Can I move to Mexico if I work remote back home?",
-];
+import { useTranslations } from "next-intl";
 
 type PropType = {
   slides: number[];
@@ -24,11 +17,20 @@ const QuestionCarousel: React.FC<PropType> = (props) => {
     Autoplay({ playOnInit: true, delay: 3000 }),
   ]);
   const [isPlaying, setIsPlaying] = useState(true);
+  const t = useTranslations("Index");
 
   useEffect(() => {
     const autoplay = emblaApi?.plugins()?.autoplay;
     if (!autoplay) return;
   }, [emblaApi]);
+
+  const QUESTIONS = [
+    t("home_question1"),
+    t("home_question2"),
+    t("home_question3"),
+    t("home_question4"),
+    t("home_question5"),
+  ];
 
   return (
     <div className="embla">

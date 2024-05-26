@@ -16,7 +16,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Message } from "ai/react";
 import { useAssistant } from "ai/react";
-import MessageItem from "../_components/message_item";
+import MessageItem from "./message_item";
+import { useTranslations } from "next-intl";
 
 export default function Stepper() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,6 +25,7 @@ export default function Stepper() {
   const [loading, setLoading] = useState(false);
   const sendRef = useRef<HTMLFormElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const t = useTranslations("Migrate_To");
 
   const {
     register,
@@ -64,7 +66,7 @@ export default function Stepper() {
     <>
       <div className="flex flex-col gap-5 p-10">
         <p className="text-small text-default-500" style={{ color: "#0070b3" }}>
-          Step: {currentPage}
+          {t("migrate_step_label")}: {currentPage}
         </p>
         <Pagination
           total={4}
@@ -75,8 +77,8 @@ export default function Stepper() {
         <form onSubmit={handleSubmit(_handleSubmit)}>
           <div className={`flex flex-col ${currentPage !== 1 ? "hidden" : ""}`}>
             <Input
-              placeholder="What's your name?"
-              label="Name"
+              placeholder={t("migrate_name_label")}
+              label={t("migrate_name_title_label")}
               {...register("name", { required: true })}
               className="my-2"
               isInvalid={!!errors.name?.message}
@@ -85,8 +87,8 @@ export default function Stepper() {
           </div>
           <div className={`flex flex-col ${currentPage !== 2 ? "hidden" : ""}`}>
             <Input
-              placeholder="What country are you from?"
-              label="Country"
+              placeholder={t("migrate_country_from_label")}
+              label={t("migrate_country_label")}
               {...register("country", { required: true })}
               className="my-2"
               isInvalid={errors.country && !!errors.country.message}
@@ -95,8 +97,8 @@ export default function Stepper() {
           </div>
           <div className={`flex flex-col ${currentPage !== 3 ? "hidden" : ""}`}>
             <Input
-              placeholder="Education level"
-              label="Education Level"
+              placeholder={t("migrate_education_label")}
+              label={t("migrate_education_label")}
               {...register("educationLevel")}
               className="my-2"
               isInvalid={
@@ -106,13 +108,10 @@ export default function Stepper() {
             />
           </div>
           <div className={`flex flex-col ${currentPage !== 4 ? "hidden" : ""}`}>
-            <h1 className="my-2">
-              Why would you like to move to Canada? Explain us in detail your
-              case.
-            </h1>
+            <h1 className="my-2">{t("migrate_describe_label")}</h1>
             <Textarea
-              placeholder="Describe us your personal case"
-              label="Give us more details"
+              placeholder={t("migrate_describe_personal_case_label")}
+              label={t("migrate_details_label")}
               {...register("description", { required: true })}
               className="my-2"
               isInvalid={errors.description && !!errors.description.message}
@@ -128,7 +127,7 @@ export default function Stepper() {
                 setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev))
               }
             >
-              Back
+              {t("migrate_back_button_label")}
             </Button>
             <Button
               size="sm"
@@ -141,7 +140,9 @@ export default function Stepper() {
                 }
               }}
             >
-              {currentPage === 4 ? "Generate response" : "Next"}
+              {currentPage === 4
+                ? t("migrate_generate_response_button_label")
+                : t("migrate_next_button_label")}
             </Button>
             <Button
               size="sm"
@@ -151,7 +152,7 @@ export default function Stepper() {
               isDisabled={!isValid}
               className={`${currentPage === 4 ? "" : "hidden"}`}
             >
-              Generate response
+              {t("migrate_generate_response_button_label")}
             </Button>
           </div>
         </form>
@@ -201,7 +202,7 @@ export default function Stepper() {
               onChange={handleInputChange}
             />
             <Button className="mx-2 px-8" type="submit" color="default">
-              Generate answer
+              {t("migrate_generate_response_button_label")}
             </Button>
           </form>
         </div>

@@ -1,38 +1,36 @@
 "use client";
-import { useState, useMemo } from "react";
-import {
-  Tabs,
-  Tab,
-  Card,
-  CardBody,
-  Listbox,
-  ListboxItem,
-} from "@nextui-org/react";
+import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 import Chat from "../_components/chat";
 import Stepper from "../_components/Stepper";
 import { ListboxWrapper } from "../_components/ListboxWrapper";
+import { useTranslations } from "next-intl";
 
-export default function Canada() {
+type Props = {
+  params: { locale: string };
+};
+
+export default function Canada({ params: { locale } }: Props) {
+  const t = useTranslations("Migrate_To");
   return (
     <div className="my-10 w-full p-10 z-10">
       <div className="flex w-full flex-col">
-        <h1 className="my-2">Canada</h1>
+        <h1 className="my-2">{t("migrate_canada_label")}</h1>
         <Tabs aria-label="Options">
-          <Tab key="free" title="Ask Freely">
+          <Tab key="free" title={t("migrate_ask_label")}>
             <Card>
               <CardBody className="text-white">
                 <Chat country="canada" />
               </CardBody>
             </Card>
           </Tab>
-          <Tab key="guide" title="Guide me">
+          <Tab key="guide" title={t("migrate_guide_me_label")}>
             <Card>
               <CardBody>
                 <Stepper />
               </CardBody>
             </Card>
           </Tab>
-          <Tab key="history" title="History">
+          <Tab key="history" title={t("migrate_history_label")}>
             <Card>
               <CardBody>
                 <ListboxWrapper />
