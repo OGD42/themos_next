@@ -1,4 +1,5 @@
 "use client";
+import Head from "next/head";
 import {
   Navbar,
   NavbarBrand,
@@ -56,6 +57,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }
   return (
     <>
+      <Head>
+        <title>Themos - You AI migration assistant</title>
+        <meta
+          name="Migrate to Canada"
+          content="Themos help you migrate to Canada"
+        />
+        <meta
+          name="Migrate to Spain"
+          content="Themos help you migrate to Spain"
+        />
+        <meta
+          name="Migrate to Germany"
+          content="Themos help you migrate to Germany"
+        />
+        <meta
+          name="Migrate to Mexico"
+          content="Themos help you migrate to Mexico"
+        />
+      </Head>
       <Navbar
         classNames={{
           item: [

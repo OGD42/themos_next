@@ -15,7 +15,7 @@ export default function Home({ params: { locale } }: Props) {
     <div className="container flex h-screen flex-col lg:flex-row items-center justify-center gap-12 px-4 py-16 z-10">
       <div className="flex flex-1 flex-col justify-center items-start">
         <h1 className="text-5xl font-extrabold sm:text-[5rem] py-2">
-          <span className="text-blue-700">Themos.ai</span>{" "}
+          <span className="text-blue-700">{t("themos_title")}</span>{" "}
           {t("themos_description")}
         </h1>
         <h3 className="text-2xl py-2">{t("home_title")}</h3>
