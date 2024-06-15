@@ -9,13 +9,13 @@ type Props = {
   params: { locale: string };
 };
 
-export default function Canada({ params: { locale } }: Props) {
+export default function Spain({ params: { locale } }: Props) {
   const t = useTranslations("Migrate_To");
   return (
     <div className="my-10 flex w-full p-10 z-10 justify-center items-center">
       <div className="flex flex-col w-full md:w-[80%] lg:w-[70%] xl:w-[50%]">
         <h1 className="my-2 text-4xl font-bold py-3">
-          {t("migrate_canada_label")}
+          {t("migrate_spain_label")}
         </h1>
         <Tabs aria-label="Options">
           <Tab key="free" title={t("migrate_ask_label")}>
@@ -35,7 +35,7 @@ export default function Canada({ params: { locale } }: Props) {
           <Tab key="history" title={t("migrate_history_label")}>
             <Card>
               <CardBody>
-                <ListboxWrapper country="canada" />
+                <ListboxWrapper country="spain" />
               </CardBody>
             </Card>
           </Tab>

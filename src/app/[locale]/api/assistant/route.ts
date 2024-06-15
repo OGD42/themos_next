@@ -26,6 +26,12 @@ export async function POST(req: Request) {
     message: body.message,
     locale: body.locale,
   });
+  // body.country === "spain"
+  //   ? await handleLanguage({
+  //       message: body.message,
+  //       locale: body.locale,
+  //     })
+  //   : await handleSpain(body.locale, body.message);
 
   const content = response.choices[0].message.content || "";
   // Create a thread if needed
@@ -192,6 +198,62 @@ async function handleLanguage({
       top_p: 1,
     });
     return response;
+  }
+}
+
+async function handleSpain(language: string, message: string) {
+  if (language === "es") {
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: messages.spanish,
+        },
+        {
+          role: "user",
+          content: message,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 64,
+      top_p: 1,
+    });
+    return response;
+  } else {
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: messages.english,
+        },
+        {
+          role: "user",
+          content: message,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 64,
+      top_p: 1,
+    });
+    const translatedToSpanish = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: messages.spanish,
+        },
+        {
+          role: "user",
+          content: response.choices[0].message.content || "",
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 64,
+      top_p: 1,
+    });
+    return translatedToSpanish;
   }
 }
 

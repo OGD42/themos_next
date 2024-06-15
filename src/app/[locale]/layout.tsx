@@ -5,16 +5,25 @@ import { getMessages } from "next-intl/server";
 import "./globals.css";
 import { Providers } from "./providers";
 import { BackgroundBeams } from "./_components/background-beams";
+import { SITE_URL } from "@/utils/helpers";
+import NavigationBar from "./_components/navigation-bar";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Themos.ai",
+  title: "Themos.ai - %s",
   description: "Your Migration assistant",
   applicationName: "Themos.ai",
   authors: {
     url: "Oscargallo.dev",
     name: "Oscar Gallo",
+  },
+  openGraph: {
+    title: "Themos.ai - Migrate anywhere",
+    description: "Your Migration assistant",
+    type: "website",
+    locale: "en_US",
+    url: SITE_URL,
   },
   keywords: [
     "migration Lawyer",
@@ -51,6 +60,7 @@ export default async function RootLayout({
         <Providers>
           <main className="flex min-h-screen flex-col items-center text-white overflow-hidden">
             <NextIntlClientProvider messages={messages}>
+              <NavigationBar />
               {children}
             </NextIntlClientProvider>
             <BackgroundBeams />

@@ -40,7 +40,7 @@
         "_spain_start": "start",
         "dashboard_spain_label": "Spain",
         "dashboard_spain_citizenship_label": "Citizenship: 2 to 10 years.",
-        "dashboard_spain_residence_label":"Available Soon",
+        "dashboard_spain_residence_label":"Permanent Residence: 2 to 5 years.",
         "dashboard_spain_pros":  "🍷 Good work/life balance.🏥 Free Healthcare.🚈 Public Services.👮🏻‍♂️ Safe.",
         "dashboard_spain_cons": "High Taxes.Horrible for businesses.Bad economy.Unemployment",
         "_spain_end": "end",
@@ -54,7 +54,9 @@
         "_germany_end": "end"
     },
     "Migrate_To": {
+        "_canada_start": "start",
         "migrate_canada_label": "Canada",
+        "migrate_spain_label": "Spain",
         "migrate_ask_label": "Ask Freely",
         "migrate_describe_case_label": "Describe us your case",
         "migrate_generate_answer_label":"Generate answer",

@@ -29,8 +29,8 @@ export default function CityCard({
   const locale = useLocale();
   return (
     <Card className="py-4 max-w-[360px] w-[360px]">
-      {cityName === "Canada" ? (
-        <Link href={`/${locale}/dashboard/canada`}>
+      {cityName === "Canada" || cityName === "Spain" ? (
+        <Link href={`/${locale}/dashboard/${cityName.toLowerCase()}`}>
           <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
             <h4 className="text-xl font-bold uppercase">{cityName}</h4>
             <p className="text-tiny font-bold">{title}</p>

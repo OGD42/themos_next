@@ -33,7 +33,7 @@ export default function LanguageSelector({
   return (
     <Select
       className={clsx(
-        "max-w-[200px] absolute top-1 right-1",
+        "w-[150px] absolute top-1 right-1 md:w-[200px]",
         isPending && "transition-opacity [&:disabled]:opacity-30",
         className
       )}

@@ -1,59 +1,16 @@
 "use client";
 import { useState, useMemo } from "react";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import useStore from "@/api/store";
-import { database } from "@/api/firebase";
-import {
-  DocumentData,
-  FirestoreDataConverter,
-  QueryDocumentSnapshot,
-  SnapshotOptions,
-  Timestamp,
-  WithFieldValue,
-  collection,
-} from "firebase/firestore";
 import { Listbox, ListboxItem } from "@nextui-org/react";
 import moment from "moment";
-import { Message } from "ai";
 import MessageItem from "./message_item";
+import useGetHistory from "@/api/hooks/useGetHistory";
 
-interface HistoryDataType {
-  id: string;
-  firstMessage: string;
-  messages: {
-    id: string;
-    tool_call_id?: string;
-    createdAt?: Date;
-    content: string;
-    ui?: string | JSX.Element | JSX.Element[] | null | undefined;
-    role: "system" | "user" | "assistant" | "function" | "data" | "tool";
-  }[];
-  created_at: Timestamp;
-  updated_at: Timestamp;
-  user_id: string;
-}
-
-const postConverter: FirestoreDataConverter<HistoryDataType> = {
-  toFirestore(post: WithFieldValue<HistoryDataType>): DocumentData {
-    return post;
-  },
-  fromFirestore(
-    snapshot: QueryDocumentSnapshot,
-    options: SnapshotOptions
-  ): HistoryDataType {
-    const data = snapshot.data(options);
-    return {
-      id: snapshot.id,
-      created_at: data.created_at,
-      updated_at: data.updated_at,
-      user_id: data.user_id,
-      firstMessage: data.firstMessage,
-      messages: data.messages,
-    };
-  },
+type HistoryChat = {
+  country: "canada" | "spain" | "usa" | "germany";
 };
 
-export const ListboxWrapper = () => {
+export const ListboxWrapper = ({ country }: HistoryChat) => {
   const user = useStore();
   const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set([]));
 
@@ -61,19 +18,13 @@ export const ListboxWrapper = () => {
     () => Array.from(selectedKeys).join(", "),
     [selectedKeys]
   );
+  const { data: historyData } = useGetHistory(country);
 
-  const [value, loading, error] = useCollectionData(
-    collection(database, "conversation").withConverter(postConverter),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    }
-  );
-
-  async function manageSelection(keys: Set<string>) {
+  function manageSelection(keys: Set<string>) {
     setSelectedKeys(keys);
   }
 
-  const findMessages = value?.find((c) => c.id === selectedValue);
+  const findMessages = historyData?.find((c) => c.id === selectedValue);
 
   return (
     <div className="flex flex-1 flex-col lg:flex-row">
@@ -86,8 +37,8 @@ export const ListboxWrapper = () => {
           selectedKeys={selectedKeys}
           onSelectionChange={manageSelection as any}
         >
-          {value ? (
-            value.map((i) => (
+          {historyData ? (
+            historyData.map((i) => (
               <ListboxItem key={i.id}>
                 <div className="flex gap-2 items-center">
                   <div className="flex flex-col">

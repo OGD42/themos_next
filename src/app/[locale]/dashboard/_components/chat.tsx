@@ -65,6 +65,7 @@ export default function Chat({ country, thread }: ChatType) {
             updated_at: new Date(),
             firstMessage: findMessage.content,
             messages,
+            country,
           });
         }
       }
