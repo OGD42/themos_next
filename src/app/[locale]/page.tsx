@@ -22,7 +22,7 @@ export default function Home({ params: { locale } }: Props) {
         <StyledFirebaseAuth />
       </div>
       <div className="flex flex-col flex-1 justify-center items-center lg:items-start bg-slate-700 rounded-small w-[90%] p-2">
-        <h2 className="text-3xl">{t("home_ask_title")}</h2>
+        <h2 className="text-3xl lg:pt-2 lg:pl-2">{t("home_ask_title")}</h2>
         <QuestionCarousel slides={Array.from(Array(5).keys())} />
       </div>
       <LanguageSelector />

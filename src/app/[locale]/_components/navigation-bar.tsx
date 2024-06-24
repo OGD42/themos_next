@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import {
+  Avatar,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -12,6 +13,7 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Button,
 } from "@nextui-org/react";
 import useStore from "@/api/store";
 import { usePathname, useRouter } from "next/navigation";
@@ -22,6 +24,15 @@ import { auth } from "@/api/firebase";
 import Logo from "./logo";
 import LanguageSelector from "./language-selector";
 import useGetAuth from "@/api/hooks/useGetAuth";
+import {
+  ChevronDown,
+  Scale,
+  Lock,
+  Activity,
+  Flash,
+  Server,
+  TagUser,
+} from "@/components/Icons";
 
 export default function NavigationBar() {
   const locale = useLocale();
@@ -34,38 +45,91 @@ export default function NavigationBar() {
   const menuItems = [
     {
       label: t("menu_home_label"),
-      href: "/dashboard",
+      href: `/`,
     },
     {
       label: "Blog",
       href: "/dashboard",
       items: [
-        {
-          key: "canada",
-          label: "Canada",
-          action: () => router.push("/blog/canada"),
-        },
-        {
-          key: "spain",
-          label: "Spain",
-          action: () => router.push("/blog/spain"),
-        },
+        <DropdownItem
+          key="autoscaling"
+          description="Learn more about Canada, it's people and how to move there."
+          onClick={() => router.push(`/${locale}/blog/canada`)}
+          startContent={
+            <Avatar
+              alt="Canada"
+              className="w-6 h-6"
+              src="https://flagcdn.com/ca.svg"
+            />
+          }
+        >
+          Canada
+        </DropdownItem>,
+        <DropdownItem
+          key="usage_metrics"
+          description="Land of wine, siesta and the good life."
+          onClick={() => router.push(`/${locale}/blog/spain`)}
+          startContent={
+            <Avatar
+              alt="Spain"
+              className="w-6 h-6"
+              src="https://flagcdn.com/es.svg"
+            />
+          }
+        >
+          Spain
+        </DropdownItem>,
+        <DropdownItem
+          key="99_uptime"
+          description="Good and relax life, family oriented, friendly people, learn more here."
+          onClick={() => router.push(`/${locale}/blog/mexico`)}
+          startContent={
+            <Avatar
+              alt="USA"
+              className="w-6 h-6"
+              src="https://flagcdn.com/mx.svg"
+            />
+          }
+        >
+          Mexico
+        </DropdownItem>,
+        <DropdownItem
+          key="production_ready"
+          description="Want to move to America? Read more here."
+          onClick={() => router.push(`/${locale}/blog/usa`)}
+          startContent={
+            <Avatar
+              alt="USA"
+              className="w-6 h-6"
+              src="https://flagcdn.com/us.svg"
+            />
+          }
+        >
+          United States
+        </DropdownItem>,
       ],
+    },
+  ];
+
+  const loggedItems = [
+    ...menuItems,
+    {
+      label: t("menu_dashboard_label"),
+      href: `/${locale}/dashboard`,
     },
     {
       label: t("menu_profile_label"),
-      href: "/dashboard/profile",
+      href: `/${locale}/dashboard/profile`,
       items: [
-        {
-          key: "profile",
-          label: t("menu_check_profile_label"),
-          action: () => router.push("/dashboard/profile"),
-        },
-        {
-          key: "logout",
-          label: t("menu_logout_label"),
-          action: () => handleLogout(),
-        },
+        <DropdownItem
+          key="Profile"
+          onClick={() => router.push(`/${locale}/dashboard/profile`)}
+        >
+          {t("menu_check_profile_label")}
+        </DropdownItem>,
+        <DropdownItem key="Logout" onClick={() => handleLogout()}>
+          {t("menu_logout_label")}
+        </DropdownItem>,
       ],
     },
   ];
@@ -99,7 +163,10 @@ export default function NavigationBar() {
       </NavbarContent>
 
       <NavbarContent className="pr-3 sm:hidden" justify="center">
-        <Link color="foreground" href={`/${locale}/dashboard`}>
+        <Link
+          color="foreground"
+          href={pathname.includes("dashboard") ? `/${locale}/dashboard` : "/"}
+        >
           <NavbarBrand>
             <Logo />
           </NavbarBrand>
@@ -112,53 +179,17 @@ export default function NavigationBar() {
             <Logo />
           </NavbarBrand>
         </Link>
-        {menuItems.map((item, key) => {
-          if (item.items) {
-            return (
-              <Dropdown key={`${item.label}-${key}`}>
-                <DropdownTrigger>
-                  <NavbarItem
-                    key={`${item.label}-${key}`}
-                    isActive={pathname === item.href}
-                    className="cursor-pointer"
-                  >
-                    {item.label}
-                  </NavbarItem>
-                </DropdownTrigger>
-                <DropdownMenu aria-label="Static Actions">
-                  {item.items.map((subMenu, subKey) => (
-                    <DropdownItem
-                      key={`${subMenu.key}_${subKey}`}
-                      onClick={subMenu.action}
-                    >
-                      {subMenu.label}
-                    </DropdownItem>
-                  ))}
-                </DropdownMenu>
-              </Dropdown>
-            );
-          }
-          return (
-            <NavbarItem
-              key={`${item.label}-${key}`}
-              isActive={pathname === item.href}
-            >
-              <Link color="foreground" href={`/${locale}/${item.href}`}>
-                {item.label}
-              </Link>
-            </NavbarItem>
-          );
-        })}
+        {user.user && authUser
+          ? handleLoggedItems(loggedItems, pathname, locale)
+          : handleLoggedItems(menuItems, pathname, locale)}
       </NavbarContent>
 
       <NavbarMenu>
         {menuItems.map((items, key) => {
           if (items.items) {
-            return items.items.map((subItem, subKey) => (
-              <NavbarMenuItem key={`${subItem.label}_${subKey}`}>
-                <Link className="w-full" onClick={subItem.action} href="">
-                  {items.label} - {subItem.label}
-                </Link>
+            return items.items.map((component) => (
+              <NavbarMenuItem key={`${items.label}_${key}`}>
+                {component}
               </NavbarMenuItem>
             ));
           } else {
@@ -171,17 +202,6 @@ export default function NavigationBar() {
             );
           }
         })}
-        {/* <NavbarMenuItem>
-          <Link className="w-full" href="/dashboard">
-            {t("menu_home_label")}
-          </Link>
-        </NavbarMenuItem>
-        <NavbarMenuItem>
-          <Link className="w-full" href="/dashboard/profile">
-            {t("menu_profile_label")}
-          </Link>
-        </NavbarMenuItem>
-        <NavbarMenuItem onClick={handleLogout}>Logout</NavbarMenuItem> */}
       </NavbarMenu>
       <NavbarContent justify="end">
         <NavbarItem className="min-w-[250px]">
@@ -191,3 +211,66 @@ export default function NavigationBar() {
     </Navbar>
   );
 }
+
+interface ItemsType {
+  label: string;
+  href: string;
+  items?: React.JSX.Element[];
+}
+function handleLoggedItems(
+  items: ItemsType[],
+  pathname: string,
+  locale: string
+) {
+  return items.map((data, key) => {
+    if (data.items) {
+      return (
+        <Dropdown key={`${data.label}-${key}`}>
+          <DropdownTrigger>
+            <Button
+              key={`${data.label}-${key}`}
+              disableRipple
+              className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+              endContent={<ChevronDown fill="currentColor" size={16} />}
+              radius="sm"
+              variant="light"
+            >
+              {data.label}
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu
+            aria-label="ACME features"
+            className="w-[340px]"
+            itemClasses={{
+              base: "gap-4",
+            }}
+          >
+            {data.items}
+          </DropdownMenu>
+        </Dropdown>
+      );
+    }
+    return (
+      <NavbarItem
+        key={`${data.label}-${key}`}
+        isActive={pathname === data.href}
+      >
+        <Link color="foreground" href={`${data.href}`}>
+          {data.label}
+        </Link>
+      </NavbarItem>
+    );
+  });
+}
+
+const icons = {
+  chevron: <ChevronDown fill="currentColor" size={16} />,
+  scale: <Scale className="text-warning" fill="currentColor" size={30} />,
+  lock: <Lock className="text-success" fill="currentColor" size={30} />,
+  activity: (
+    <Activity className="text-secondary" fill="currentColor" size={30} />
+  ),
+  flash: <Flash className="text-primary" fill="currentColor" size={30} />,
+  server: <Server className="text-success" fill="currentColor" size={30} />,
+  user: <TagUser className="text-danger" fill="currentColor" size={30} />,
+};

@@ -4,7 +4,7 @@ import { devtools, persist } from "zustand/middleware";
 
 interface BearState {
   user: User | undefined;
-  setUser: (user: User) => void;
+  setUser: (user: User | undefined) => void;
   activeThreadId: string | undefined;
   setThreadId: (id: string) => void;
 }

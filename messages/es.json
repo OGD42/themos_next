@@ -14,6 +14,7 @@
     "Menu": {
         "menu_home_label": "Inicio",
         "menu_profile_label": "Perfil",
+        "menu_dashboard_label": "Dashboard",
         "menu_check_profile_label": "Ver Perfil",
         "menu_logout_label": "Salir",
         "menu_select_language": "Seleccionar lenguaje"

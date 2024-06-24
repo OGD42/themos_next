@@ -11,8 +11,8 @@ import NavigationBar from "./_components/navigation-bar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Themos.ai - %s",
-  description: "Your Migration assistant",
+  title: "Themos.ai - We help you find your perfect country.",
+  description: "Your AI Migration assistant",
   applicationName: "Themos.ai",
   authors: {
     url: "Oscargallo.dev",
@@ -20,26 +20,20 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Themos.ai - Migrate anywhere",
-    description: "Your Migration assistant",
+    description: "Your AI Migration assistant",
     type: "website",
     locale: "en_US",
     url: SITE_URL,
   },
   keywords: [
-    "migration Lawyer",
-    "abogado de migración",
-    "asistente de migración",
-    "migrate to Canada",
-    "migrate to Germany",
-    "move to Germany",
-    "emigrar a Canada",
-    "emigrar a Alemania",
-    "migrate to Spain",
-    "move to Spain",
-    "emigrar a España",
-    "migrate to Mexico",
-    "move to Mexico",
-    "emigrar a Mexico",
+    "migrate",
+    "emigrar",
+    "canada",
+    "move",
+    "ai assistant",
+    "spain",
+    "mexico",
+    "usa",
   ],
   icons: {
     icon: "/favicon.ico",
