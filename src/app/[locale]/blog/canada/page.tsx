@@ -1,13 +1,5 @@
 import React from "react";
 import groq from "groq";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Image,
-  Button,
-} from "@nextui-org/react";
 import { client } from "@root/sanity/lib/client";
 import BlogItem from "../_components/BlogItem";
 
