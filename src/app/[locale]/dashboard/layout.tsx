@@ -1,5 +1,7 @@
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { SITE_URL } from "@/utils/helpers";
+import { createClient } from "@/api/supabase/server";
 
 export const metadata: Metadata = {
   title: "Dashboard - Choose your country",
@@ -37,6 +39,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const supabase = createClient();
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error || !data?.user) {
+    redirect("/");
+  }
   return <>{children}</>;
 }

@@ -58,15 +58,15 @@ export default function Chat({ country, thread }: ChatType) {
         useStore.setThreadId(threadId);
         const findMessage = messages.find((i) => i.role === "user");
         if (findMessage) {
-          await addDoc(collection(database, "conversation"), {
-            thread_id: threadId,
-            user_id: useStore.user?.uid,
-            created_at: new Date(),
-            updated_at: new Date(),
-            firstMessage: findMessage.content,
-            messages,
-            country,
-          });
+          // await addDoc(collection(database, "conversation"), {
+          //   thread_id: threadId,
+          //   user_id: useStore.user?.uid,
+          //   created_at: new Date(),
+          //   updated_at: new Date(),
+          //   firstMessage: findMessage.content,
+          //   messages,
+          //   country,
+          // });
         }
       }
     }

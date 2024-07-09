@@ -12,7 +12,7 @@ const BASE_URL = "https://themos.ai";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const postEnglish = await client.fetch(groq`
-      *[_type == "post" && language == "${"en"}"] | order(publishedAt desc) {
+      *[_type == "post" && language == "en"] | order(publishedAt desc) {
         title,
         slug,
         "authorName": author -> name,
@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const postSpanish = await client.fetch(groq`
-      *[_type == "post" && language == "${"es"}"] | order(publishedAt desc) {
+      *[_type == "post" && language == "es"] | order(publishedAt desc) {
         title,
         slug,
         mainImage,

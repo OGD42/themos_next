@@ -3,6 +3,7 @@ import { unstable_setRequestLocale } from "next-intl/server";
 import StyledFirebaseAuth from "@/components/StyledFirebaseAuth";
 import QuestionCarousel from "./_components/QuestionsCarousel";
 import LanguageSelector from "./_components/language-selector";
+import LoginForm from "./_components/login-form";
 
 type Props = {
   params: { locale: string };
@@ -19,7 +20,7 @@ export default function Home({ params: { locale } }: Props) {
           {t("themos_description")}
         </h1>
         <h3 className="text-xl py-2">{t("home_title")}</h3>
-        <StyledFirebaseAuth />
+        <LoginForm locale={locale} />
       </div>
       <div className="flex flex-col flex-1 justify-center items-center lg:items-start bg-slate-700 rounded-small w-[90%] p-2">
         <h2 className="text-3xl lg:pt-2 lg:pl-2">{t("home_ask_title")}</h2>

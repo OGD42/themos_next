@@ -13,7 +13,7 @@ type PropType = {
 
 const QuestionCarousel: React.FC<PropType> = (props) => {
   const { slides, options } = props;
-  const [emblaRef, emblaApi] = useEmblaCarousel(options, [
+  const [emblaRef, emblaApi] = useEmblaCarousel({ ...options, axis: "y" }, [
     Autoplay({ playOnInit: true, delay: 3000 }),
   ]);
   const [isPlaying, setIsPlaying] = useState(true);

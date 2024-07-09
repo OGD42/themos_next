@@ -8,7 +8,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import Link from "next/link";
-// import Image from "next/image";
+import NextImage from "next/image";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@root/sanity/lib/client";
 

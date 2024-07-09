@@ -17,7 +17,7 @@ import { auth } from "@/api/firebase";
 import { useRouter } from "next/navigation";
 
 export default function Profile() {
-  const user = useGetAuth();
+  const { user, isLoading } = useGetAuth();
   const router = useRouter();
 
   async function handleLogout() {
@@ -32,15 +32,10 @@ export default function Profile() {
             alt="nextui logo"
             height={40}
             radius="sm"
-            src={
-              user?.photoURL
-                ? user?.photoURL
-                : "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-            }
+            src={"https://avatars.githubusercontent.com/u/86160567?s=200&v=4"}
             width={40}
           />
           <div className="flex flex-col">
-            <p className="text-md">{user?.displayName}</p>
             <p className="text-small text-default-500">{user?.email}</p>
           </div>
         </CardHeader>

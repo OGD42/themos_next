@@ -19,8 +19,6 @@ import useStore from "@/api/store";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { signOut } from "firebase/auth";
-import { auth } from "@/api/firebase";
 import Logo from "./logo";
 import LanguageSelector from "./language-selector";
 import useGetAuth from "@/api/hooks/useGetAuth";
@@ -33,6 +31,7 @@ import {
   Server,
   TagUser,
 } from "@/components/Icons";
+import { createClient } from "@/api/supabase/client";
 
 export default function NavigationBar() {
   const locale = useLocale();
@@ -40,7 +39,8 @@ export default function NavigationBar() {
   const pathname = usePathname();
   const router = useRouter();
   const user = useStore();
-  const authUser = useGetAuth();
+  const { user: supabaseUser, isLoading } = useGetAuth();
+  const supaClient = createClient();
 
   const menuItems = [
     {
@@ -135,9 +135,10 @@ export default function NavigationBar() {
   ];
 
   async function handleLogout() {
-    await signOut(auth);
+    await supaClient.auth.signOut();
     router.replace("/");
   }
+
   return (
     <Navbar
       position="static"
@@ -165,7 +166,11 @@ export default function NavigationBar() {
       <NavbarContent className="pr-3 sm:hidden" justify="center">
         <Link
           color="foreground"
-          href={pathname.includes("dashboard") ? `/${locale}/dashboard` : "/"}
+          href={
+            pathname.includes("dashboard")
+              ? `/${locale}/dashboard`
+              : `/${locale}`
+          }
         >
           <NavbarBrand>
             <Logo />
@@ -174,12 +179,19 @@ export default function NavigationBar() {
       </NavbarContent>
 
       <NavbarContent className="hidden gap-4 sm:flex" justify="center">
-        <Link color="foreground" href={`/${locale}/dashboard`}>
+        <Link
+          color="foreground"
+          href={
+            pathname.includes("dashboard")
+              ? `/${locale}/dashboard`
+              : `/${locale}`
+          }
+        >
           <NavbarBrand>
             <Logo />
           </NavbarBrand>
         </Link>
-        {user.user && authUser
+        {supabaseUser
           ? handleLoggedItems(loggedItems, pathname, locale)
           : handleLoggedItems(menuItems, pathname, locale)}
       </NavbarContent>
