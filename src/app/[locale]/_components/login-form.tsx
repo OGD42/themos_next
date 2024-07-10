@@ -45,7 +45,7 @@ export default function LoginPage({ locale }: { locale: string }) {
       });
     }
   }
-  console.log("user", user);
+
   if (user) {
     return (
       <Card className="max-w-full lg:w-5/6 pt-2 my-4">

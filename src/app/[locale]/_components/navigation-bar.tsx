@@ -138,7 +138,7 @@ export default function NavigationBar() {
     await supaClient.auth.signOut();
     router.replace("/");
   }
-
+  console.log("supabase user", supabaseUser);
   return (
     <Navbar
       position="static"
@@ -192,8 +192,61 @@ export default function NavigationBar() {
           </NavbarBrand>
         </Link>
         {supabaseUser
+          ? loggedItems.map((item, index) => {
+              if (item.items) {
+                return item.items.map((component, key) => (
+                  <NavbarMenuItem key={`${item.label}_${key}`}>
+                    {component}
+                  </NavbarMenuItem>
+                ));
+              }
+              return (
+                <NavbarMenuItem key={`${item.label}-${index}`}>
+                  <Link
+                    color={
+                      index === 2
+                        ? "primary"
+                        : index === menuItems.length - 1
+                          ? "danger"
+                          : "foreground"
+                    }
+                    className="w-full"
+                    href={item.href}
+                  >
+                    {item.label}
+                  </Link>
+                </NavbarMenuItem>
+              );
+            })
+          : menuItems.map((item, index) => {
+              if (item.items) {
+                return item.items.map((component, key) => (
+                  <NavbarMenuItem key={`${item.label}_${key}`}>
+                    {component}
+                  </NavbarMenuItem>
+                ));
+              }
+              return (
+                <NavbarMenuItem key={`${item.label}-${index}`}>
+                  <Link
+                    color={
+                      index === 2
+                        ? "primary"
+                        : index === menuItems.length - 1
+                          ? "danger"
+                          : "foreground"
+                    }
+                    className="w-full"
+                    href={item.href}
+                  >
+                    {item.label}
+                  </Link>
+                </NavbarMenuItem>
+              );
+            })}
+        {/* {supabaseUser
           ? handleLoggedItems(loggedItems, pathname, locale)
-          : handleLoggedItems(menuItems, pathname, locale)}
+          : handleLoggedItems(menuItems, pathname, locale)} */}
       </NavbarContent>
 
       <NavbarMenu>
