@@ -30,7 +30,7 @@ export default function Dashboard({ params: { locale } }: Props) {
     {
       cityName: t("dashboard_spain_label"),
       title: t("dashboard_spain_citizenship_label"),
-      subtitle: t("dashboard_spain_residence_label"),
+      subtitle: t("dashboard_usa_residence_label"),
       picture: Spain.src,
       pros: t("dashboard_spain_pros")
         .split(".")

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import SVGBackground from "@/assets/background.svg";
 import "./globals.css";
 import { Providers } from "./providers";
 import { BackgroundBeams } from "./_components/background-beams";
@@ -50,14 +51,16 @@ export default async function RootLayout({
   const messages = await getMessages();
   return (
     <html lang="en" className="dark">
-      <body className={inter.className}>
+      <body
+        className={`${inter.className} bg-cover	bg-repeat`}
+        style={{ backgroundImage: `url(${SVGBackground.src})` }}
+      >
         <Providers>
           <main className="flex min-h-screen flex-col items-center text-white overflow-hidden">
             <NextIntlClientProvider messages={messages}>
               <NavigationBar />
               {children}
             </NextIntlClientProvider>
-            <BackgroundBeams />
           </main>
         </Providers>
       </body>

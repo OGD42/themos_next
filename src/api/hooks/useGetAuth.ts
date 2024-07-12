@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import type { User } from "@supabase/supabase-js";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "@/api/firebase";
 import useStore from "@/api/store";
-import { createClient } from "../supabase/client";
 
 const useGetAuth = () => {
   const [state, setState] = useState<{
@@ -14,38 +14,30 @@ const useGetAuth = () => {
     isLoading: true,
     error: false,
   });
-  const client = createClient();
   const userStore = useStore();
   useEffect(() => {
-    const { data } = client.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" && session) {
-        setState((oldState) => ({
-          ...oldState,
-          user: session?.user,
-          isLoading: false,
-        }));
-        userStore.setUser(session?.user);
-      }
-      if (event === "INITIAL_SESSION" && session) {
-        setState((oldState) => ({
-          ...oldState,
-          user: session?.user,
-          isLoading: false,
-        }));
-        userStore.setUser(session?.user);
-      }
-
-      if (event === "SIGNED_OUT" && session) {
+    const subscription = onAuthStateChanged(auth, (user) => {
+      if (user) {
         setState({
+          ...state,
+          user,
           isLoading: false,
-          user: null,
+          error: false,
+        });
+        userStore.setUser(user);
+      } else {
+        setState({
+          ...state,
+          user,
+          isLoading: false,
           error: false,
         });
         userStore.setUser(undefined);
       }
     });
+
     () => {
-      data.subscription.unsubscribe();
+      subscription();
     };
   }, []);
   return { ...state };

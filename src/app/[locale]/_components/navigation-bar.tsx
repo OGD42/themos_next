@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Navbar,
@@ -34,12 +34,13 @@ import {
 import { createClient } from "@/api/supabase/client";
 
 export default function NavigationBar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const locale = useLocale();
   const t = useTranslations("Menu");
   const pathname = usePathname();
   const router = useRouter();
   const user = useStore();
-  const { user: supabaseUser, isLoading } = useGetAuth();
+  const { user: firebaseUser, isLoading } = useGetAuth();
   const supaClient = createClient();
 
   const menuItems = [
@@ -50,9 +51,21 @@ export default function NavigationBar() {
     {
       label: "Blog",
       href: "/dashboard",
+      itemsMobile: [
+        <NavbarMenuItem key="blog_canada">
+          <Link className="w-full" href={`/${locale}/blog/canada`}>
+            Blog - Canada
+          </Link>
+        </NavbarMenuItem>,
+        <NavbarMenuItem key="blog_spain">
+          <Link className="w-full" href={`/${locale}/blog/spain`}>
+            Blog - Spain
+          </Link>
+        </NavbarMenuItem>,
+      ],
       items: [
         <DropdownItem
-          key="autoscaling"
+          key="blog_canada"
           description="Learn more about Canada, it's people and how to move there."
           onClick={() => router.push(`/${locale}/blog/canada`)}
           startContent={
@@ -120,6 +133,17 @@ export default function NavigationBar() {
     {
       label: t("menu_profile_label"),
       href: `/${locale}/dashboard/profile`,
+      itemsMobile: [
+        <NavbarMenuItem
+          key="Profile"
+          onClick={() => router.push(`/${locale}/dashboard/profile`)}
+        >
+          {t("menu_check_profile_label")}
+        </NavbarMenuItem>,
+        <NavbarMenuItem key="Logout" onClick={() => handleLogout()}>
+          {t("menu_logout_label")}
+        </NavbarMenuItem>,
+      ],
       items: [
         <DropdownItem
           key="Profile"
@@ -138,141 +162,149 @@ export default function NavigationBar() {
     await supaClient.auth.signOut();
     router.replace("/");
   }
-  console.log("supabase user", supabaseUser);
+
+  console.log("firebaseUser", firebaseUser);
+
   return (
-    <Navbar
-      position="static"
-      classNames={{
-        item: [
-          "flex",
-          "relative",
-          "h-full",
-          "items-center",
-          "data-[active=true]:after:content-['']",
-          "data-[active=true]:after:absolute",
-          "data-[active=true]:after:bottom-0",
-          "data-[active=true]:after:left-0",
-          "data-[active=true]:after:right-0",
-          "data-[active=true]:after:h-[2px]",
-          "data-[active=true]:after:rounded-[2px]",
-          "data-[active=true]:after:bg-primary",
-        ],
-      }}
-    >
-      <NavbarContent className="sm:hidden" justify="start">
-        <NavbarMenuToggle />
+    <Navbar onMenuOpenChange={setIsMenuOpen}>
+      <NavbarContent className="lg:max-w-[60px]">
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          className="sm:hidden"
+        />
+        <NavbarBrand>
+          <Logo />
+        </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className="pr-3 sm:hidden" justify="center">
-        <Link
-          color="foreground"
-          href={
-            pathname.includes("dashboard")
-              ? `/${locale}/dashboard`
-              : `/${locale}`
-          }
-        >
-          <NavbarBrand>
-            <Logo />
-          </NavbarBrand>
-        </Link>
+      <NavbarContent className="hidden sm:flex gap-4" justify="start">
+        <NavbarItem>
+          <Link color="foreground" href="/">
+            {t("menu_home_label")}
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Dropdown backdrop="blur">
+            <DropdownTrigger>
+              <Button
+                disableRipple
+                className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                endContent={<ChevronDown fill="currentColor" size={16} />}
+                radius="sm"
+              >
+                Blog
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu variant="faded">
+              <DropdownItem
+                key="blog_canada"
+                description="Learn more about Canada, it's people and how to move there."
+                onClick={() => router.push(`/${locale}/blog/canada`)}
+                startContent={
+                  <Avatar
+                    alt="Canada"
+                    className="w-6 h-6"
+                    src="https://flagcdn.com/ca.svg"
+                  />
+                }
+              >
+                Canada
+              </DropdownItem>
+              <DropdownItem
+                key="usage_metrics"
+                description="Land of wine, siesta and the good life."
+                onClick={() => router.push(`/${locale}/blog/spain`)}
+                startContent={
+                  <Avatar
+                    alt="Spain"
+                    className="w-6 h-6"
+                    src="https://flagcdn.com/es.svg"
+                  />
+                }
+              >
+                Spain
+              </DropdownItem>
+              <DropdownItem
+                key="99_uptime"
+                description="Good and relax life, family oriented, friendly people, learn more here."
+                onClick={() => router.push(`/${locale}/blog/mexico`)}
+                startContent={
+                  <Avatar
+                    alt="USA"
+                    className="w-6 h-6"
+                    src="https://flagcdn.com/mx.svg"
+                  />
+                }
+              >
+                Mexico
+              </DropdownItem>
+              <DropdownItem
+                key="production_ready"
+                description="Want to move to America? Read more here."
+                onClick={() => router.push(`/${locale}/blog/usa`)}
+                startContent={
+                  <Avatar
+                    alt="USA"
+                    className="w-6 h-6"
+                    src="https://flagcdn.com/us.svg"
+                  />
+                }
+              >
+                United States
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </NavbarItem>
+        {firebaseUser && (
+          <>
+            <NavbarItem>
+              <Link color="foreground" href={`/${locale}/dashboard`}>
+                {t("menu_dashboard_label")}
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Link color="foreground" href={`/${locale}/dashboard/profile`}>
+                {t("menu_check_profile_label")}
+              </Link>
+            </NavbarItem>
+          </>
+        )}
       </NavbarContent>
-
-      <NavbarContent className="hidden gap-4 sm:flex" justify="center">
-        <Link
-          color="foreground"
-          href={
-            pathname.includes("dashboard")
-              ? `/${locale}/dashboard`
-              : `/${locale}`
-          }
-        >
-          <NavbarBrand>
-            <Logo />
-          </NavbarBrand>
-        </Link>
-        {supabaseUser
-          ? loggedItems.map((item, index) => {
-              if (item.items) {
-                return item.items.map((component, key) => (
-                  <NavbarMenuItem key={`${item.label}_${key}`}>
-                    {component}
-                  </NavbarMenuItem>
-                ));
-              }
-              return (
-                <NavbarMenuItem key={`${item.label}-${index}`}>
-                  <Link
-                    color={
-                      index === 2
-                        ? "primary"
-                        : index === menuItems.length - 1
-                          ? "danger"
-                          : "foreground"
-                    }
-                    className="w-full"
-                    href={item.href}
-                  >
-                    {item.label}
-                  </Link>
-                </NavbarMenuItem>
-              );
-            })
-          : menuItems.map((item, index) => {
-              if (item.items) {
-                return item.items.map((component, key) => (
-                  <NavbarMenuItem key={`${item.label}_${key}`}>
-                    {component}
-                  </NavbarMenuItem>
-                ));
-              }
-              return (
-                <NavbarMenuItem key={`${item.label}-${index}`}>
-                  <Link
-                    color={
-                      index === 2
-                        ? "primary"
-                        : index === menuItems.length - 1
-                          ? "danger"
-                          : "foreground"
-                    }
-                    className="w-full"
-                    href={item.href}
-                  >
-                    {item.label}
-                  </Link>
-                </NavbarMenuItem>
-              );
-            })}
-        {/* {supabaseUser
-          ? handleLoggedItems(loggedItems, pathname, locale)
-          : handleLoggedItems(menuItems, pathname, locale)} */}
-      </NavbarContent>
-
-      <NavbarMenu>
-        {menuItems.map((items, key) => {
-          if (items.items) {
-            return items.items.map((component) => (
-              <NavbarMenuItem key={`${items.label}_${key}`}>
-                {component}
-              </NavbarMenuItem>
-            ));
-          } else {
-            return (
-              <NavbarMenuItem key={`${items.label}_${key}`}>
-                <Link className="w-full" href={items.href}>
-                  {items.label}
-                </Link>
-              </NavbarMenuItem>
-            );
-          }
-        })}
-      </NavbarMenu>
-      <NavbarContent justify="end">
-        <NavbarItem className="min-w-[250px]">
+      <NavbarContent justify="end" as="div" className="items-center">
+        {firebaseUser && (
+          <NavbarItem>
+            <Button
+              color="primary"
+              variant="flat"
+              onClick={() => handleLogout()}
+            >
+              {t("menu_logout_label")}
+            </Button>
+          </NavbarItem>
+        )}
+        <NavbarItem>
           <LanguageSelector />
         </NavbarItem>
       </NavbarContent>
+      <NavbarMenu>
+        {menuItems.map((item, index) => (
+          <NavbarMenuItem key={`${item}-${index}`}>
+            <Link
+              color={
+                index === 2
+                  ? "primary"
+                  : index === menuItems.length - 1
+                    ? "danger"
+                    : "foreground"
+              }
+              className="w-full"
+              href="#"
+            >
+              {/* {item} */}
+            </Link>
+          </NavbarMenuItem>
+        ))}
+      </NavbarMenu>
     </Navbar>
   );
 }

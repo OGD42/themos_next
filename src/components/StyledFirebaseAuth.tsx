@@ -1,19 +1,28 @@
 "use client";
-import { Button } from "@nextui-org/react";
-// import { FaPhone } from "react-icons/fa6";
 import Image from "next/image";
+import Link from "next/link";
+import { PiSignIn } from "react-icons/pi";
 import {
   GoogleAuthProvider,
   signInWithPopup,
-  onAuthStateChanged,
   browserSessionPersistence,
 } from "firebase/auth";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Divider,
+  Button,
+  Link as UILink,
+} from "@nextui-org/react";
 import { auth } from "@/api/firebase";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import LoadingIndicator from "./LoadingIndicator";
 import store from "@/api/store";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
+import useGetAuth from "@/api/hooks/useGetAuth";
 
 const provider = new GoogleAuthProvider();
 provider.addScope("email");
@@ -25,20 +34,7 @@ export default function StyledFirebaseAuth() {
   const userStore = store();
   const t = useTranslations("Index");
   const locale = useLocale();
-
-  useEffect(() => {
-    const observer = onAuthStateChanged(auth, (u) => {
-      if (u) {
-        userStore.setUser(u);
-        router.push(`/${locale}/dashboard`);
-      } else {
-        //
-      }
-    });
-    return () => {
-      observer();
-    };
-  }, []);
+  const { user, isLoading } = useGetAuth();
 
   async function handleSignInWithGoogle() {
     try {
@@ -53,27 +49,49 @@ export default function StyledFirebaseAuth() {
     }
   }
   return (
-    <div className="flex flex-col">
-      <h1>{t("home_sign_in_here")}</h1>
-      {/* <Button startContent={<FaPhone />} className="my-2 w-[190px] h-10">
-        Phone Number
-      </Button> */}
-      <Button
-        onClick={handleSignInWithGoogle}
-        className="my-2 w-[190px] h-10"
-        startContent={
-          <Image
-            className=" h-5 w-5"
-            alt=""
-            width={40}
-            height={40}
-            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-          ></Image>
-        }
-      >
-        Google
-      </Button>
-      <LoadingIndicator isOpen={loading} onClose={() => setLoading(false)} />
-    </div>
+    <Card className="w-full">
+      <CardHeader className="flex gap-3">
+        <PiSignIn size={40} />
+        <div className="flex flex-col">
+          <p className="text-md">Login</p>
+          <p className="text-small text-default-500">
+            {t("home_sign_in_here")}
+          </p>
+        </div>
+      </CardHeader>
+      <Divider />
+      <CardBody>
+        {user && userStore.user ? (
+          <div className="flex flex-col">
+            <p className="text-lg">You &apos;re already logged</p>
+            <p className="text-small text-default-500">
+              Want to go to Dashboard?
+            </p>
+            <UILink href={`/${locale}/dashboard`} as={Link}>
+              Go to Dashboard
+            </UILink>
+          </div>
+        ) : (
+          <Button
+            onClick={handleSignInWithGoogle}
+            className="my-2 w-[190px] h-10"
+            startContent={
+              <Image
+                className=" h-5 w-5"
+                alt=""
+                width={40}
+                height={40}
+                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+              ></Image>
+            }
+          >
+            Google
+          </Button>
+        )}
+      </CardBody>
+      <CardFooter>
+        <LoadingIndicator isOpen={loading} onClose={() => setLoading(false)} />
+      </CardFooter>
+    </Card>
   );
 }

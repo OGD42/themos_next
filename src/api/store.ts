@@ -1,4 +1,4 @@
-import type { User } from "@supabase/supabase-js";
+import { User } from "firebase/auth";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
