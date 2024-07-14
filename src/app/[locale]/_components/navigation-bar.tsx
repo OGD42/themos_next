@@ -47,8 +47,6 @@ export default function NavigationBar() {
     router.replace("/");
   }
 
-  console.log("firebaseUser", firebaseUser);
-
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent className="lg:max-w-[60px]">
