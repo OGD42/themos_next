@@ -32,13 +32,13 @@ export default function Canada({ params: { locale } }: Props) {
               </CardBody>
             </Card>
           </Tab>
-          {/* <Tab key="history" title={t("migrate_history_label")}>
+          <Tab key="history" title={t("migrate_history_label")}>
             <Card>
               <CardBody>
                 <ListboxWrapper country="canada" />
               </CardBody>
             </Card>
-          </Tab> */}
+          </Tab>
         </Tabs>
       </div>
     </div>

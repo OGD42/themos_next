@@ -60,7 +60,7 @@ export default function StyledFirebaseAuth() {
         </div>
       </CardHeader>
       <Divider />
-      <CardBody>
+      <CardBody className="flex items-center">
         {user && userStore.user ? (
           <div className="flex flex-col">
             <p className="text-lg">You &apos;re already logged</p>

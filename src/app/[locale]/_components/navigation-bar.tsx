@@ -16,7 +16,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import useStore from "@/api/store";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import Logo from "./logo";
@@ -31,135 +31,19 @@ import {
   Server,
   TagUser,
 } from "@/components/Icons";
-import { createClient } from "@/api/supabase/client";
+import { auth } from "@/api/firebase";
 
 export default function NavigationBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const locale = useLocale();
   const t = useTranslations("Menu");
-  const pathname = usePathname();
   const router = useRouter();
   const user = useStore();
   const { user: firebaseUser, isLoading } = useGetAuth();
-  const supaClient = createClient();
-
-  const menuItems = [
-    {
-      label: t("menu_home_label"),
-      href: `/`,
-    },
-    {
-      label: "Blog",
-      href: "/dashboard",
-      itemsMobile: [
-        <NavbarMenuItem key="blog_canada">
-          <Link className="w-full" href={`/${locale}/blog/canada`}>
-            Blog - Canada
-          </Link>
-        </NavbarMenuItem>,
-        <NavbarMenuItem key="blog_spain">
-          <Link className="w-full" href={`/${locale}/blog/spain`}>
-            Blog - Spain
-          </Link>
-        </NavbarMenuItem>,
-      ],
-      items: [
-        <DropdownItem
-          key="blog_canada"
-          description="Learn more about Canada, it's people and how to move there."
-          onClick={() => router.push(`/${locale}/blog/canada`)}
-          startContent={
-            <Avatar
-              alt="Canada"
-              className="w-6 h-6"
-              src="https://flagcdn.com/ca.svg"
-            />
-          }
-        >
-          Canada
-        </DropdownItem>,
-        <DropdownItem
-          key="usage_metrics"
-          description="Land of wine, siesta and the good life."
-          onClick={() => router.push(`/${locale}/blog/spain`)}
-          startContent={
-            <Avatar
-              alt="Spain"
-              className="w-6 h-6"
-              src="https://flagcdn.com/es.svg"
-            />
-          }
-        >
-          Spain
-        </DropdownItem>,
-        <DropdownItem
-          key="99_uptime"
-          description="Good and relax life, family oriented, friendly people, learn more here."
-          onClick={() => router.push(`/${locale}/blog/mexico`)}
-          startContent={
-            <Avatar
-              alt="USA"
-              className="w-6 h-6"
-              src="https://flagcdn.com/mx.svg"
-            />
-          }
-        >
-          Mexico
-        </DropdownItem>,
-        <DropdownItem
-          key="production_ready"
-          description="Want to move to America? Read more here."
-          onClick={() => router.push(`/${locale}/blog/usa`)}
-          startContent={
-            <Avatar
-              alt="USA"
-              className="w-6 h-6"
-              src="https://flagcdn.com/us.svg"
-            />
-          }
-        >
-          United States
-        </DropdownItem>,
-      ],
-    },
-  ];
-
-  const loggedItems = [
-    ...menuItems,
-    {
-      label: t("menu_dashboard_label"),
-      href: `/${locale}/dashboard`,
-    },
-    {
-      label: t("menu_profile_label"),
-      href: `/${locale}/dashboard/profile`,
-      itemsMobile: [
-        <NavbarMenuItem
-          key="Profile"
-          onClick={() => router.push(`/${locale}/dashboard/profile`)}
-        >
-          {t("menu_check_profile_label")}
-        </NavbarMenuItem>,
-        <NavbarMenuItem key="Logout" onClick={() => handleLogout()}>
-          {t("menu_logout_label")}
-        </NavbarMenuItem>,
-      ],
-      items: [
-        <DropdownItem
-          key="Profile"
-          onClick={() => router.push(`/${locale}/dashboard/profile`)}
-        >
-          {t("menu_check_profile_label")}
-        </DropdownItem>,
-        <DropdownItem key="Logout" onClick={() => handleLogout()}>
-          {t("menu_logout_label")}
-        </DropdownItem>,
-      ],
-    },
-  ];
 
   async function handleLogout() {
-    await supaClient.auth.signOut();
+    user.setUser(undefined);
+    await auth.signOut();
     router.replace("/");
   }
 
@@ -173,7 +57,9 @@ export default function NavigationBar() {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <Logo />
+          <Link color="foreground" href="/">
+            <Logo />
+          </Link>
         </NavbarBrand>
       </NavbarContent>
 
@@ -208,7 +94,7 @@ export default function NavigationBar() {
                   />
                 }
               >
-                Canada
+                {t("menu_blog_canada")}
               </DropdownItem>
               <DropdownItem
                 key="usage_metrics"
@@ -222,7 +108,7 @@ export default function NavigationBar() {
                   />
                 }
               >
-                Spain
+                {t("menu_blog_spain")}
               </DropdownItem>
               <DropdownItem
                 key="99_uptime"
@@ -236,7 +122,7 @@ export default function NavigationBar() {
                   />
                 }
               >
-                Mexico
+                {t("menu_blog_mexico")}
               </DropdownItem>
               <DropdownItem
                 key="production_ready"
@@ -250,7 +136,7 @@ export default function NavigationBar() {
                   />
                 }
               >
-                United States
+                {t("menu_blog_usa")}
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
@@ -287,23 +173,34 @@ export default function NavigationBar() {
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu>
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              color={
-                index === 2
-                  ? "primary"
-                  : index === menuItems.length - 1
-                    ? "danger"
-                    : "foreground"
-              }
-              className="w-full"
-              href="#"
-            >
-              {/* {item} */}
-            </Link>
-          </NavbarMenuItem>
-        ))}
+        <NavbarMenuItem key="Home">
+          <Link className="w-full" href="/">
+            {t("menu_home_label")}
+          </Link>
+        </NavbarMenuItem>
+        <NavbarMenuItem key="Dashboard">
+          <Link href={`/${locale}/dashboard`}>{t("menu_dashboard_label")}</Link>
+        </NavbarMenuItem>
+        <NavbarMenuItem key="Blog_Canada">
+          <Link className="w-full" href={`/${locale}/blog/canada`}>
+            Blog - {t("menu_blog_canada")}
+          </Link>
+        </NavbarMenuItem>
+        <NavbarMenuItem key="Blog_Spain">
+          <Link className="w-full" href={`/${locale}/blog/spain`}>
+            Blog - {t("menu_blog_spain")}
+          </Link>
+        </NavbarMenuItem>
+        <NavbarMenuItem key="Blog_Mexico">
+          <Link className="w-full" href={`/${locale}/blog/mexico`}>
+            Blog - {t("menu_blog_mexico")}
+          </Link>
+        </NavbarMenuItem>
+        <NavbarMenuItem key="Home">
+          <Link className="w-full" href={`/${locale}/profile`}>
+            {t("menu_check_profile_label")}
+          </Link>
+        </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
   );

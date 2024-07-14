@@ -17,7 +17,11 @@
         "menu_dashboard_label": "Dashboard",
         "menu_check_profile_label": "Check Profile",
         "menu_logout_label": "Logout",
-        "menu_select_language": "Select language"
+        "menu_select_language": "Select language",
+        "menu_blog_canada": "Canada",
+        "menu_blog_spain": "Spain",
+        "menu_blog_mexico": "Mexico",
+        "menu_blog_usa": "USA"
     },
     "Dashboard": {
         "dashboard_migrate_to_label": "I would like to migrate to:",

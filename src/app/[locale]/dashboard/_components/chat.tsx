@@ -5,15 +5,15 @@ import { useEffect, useMemo, useRef } from "react";
 import MessageItem from "./message_item";
 import { database } from "@/api/firebase";
 import store from "@/api/store";
-// import {
-//   addDoc,
-//   collection,
-//   query,
-//   where,
-//   getDocs,
-//   updateDoc,
-//   doc,
-// } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 import { useLocale, useTranslations } from "next-intl";
 
 type ChatType = {
@@ -49,6 +49,48 @@ export default function Chat({ country, thread }: ChatType) {
   }, [status]);
 
   const messagesLength = useMemo(() => messages.length, [messages]);
+
+  useEffect(() => {
+    async function handleSaveThread() {
+      if (threadId && useStore.user) {
+        const savedThread = useStore.activeThreadId === threadId;
+        if (savedThread) return;
+        useStore.setThreadId(threadId);
+        const findMessage = messages.find((i) => i.role === "user");
+        if (findMessage) {
+          await addDoc(collection(database, "conversation"), {
+            thread_id: threadId,
+            user_id: useStore.user?.uid,
+            created_at: new Date(),
+            updated_at: new Date(),
+            firstMessage: findMessage.content,
+            messages,
+          });
+        }
+      }
+    }
+    handleSaveThread();
+  }, [threadId, useStore]);
+
+  useEffect(() => {
+    async function manageAddMessages() {
+      if (messages.length > 0 && threadId && status !== "awaiting_message") {
+        const conversationQuery = query(
+          collection(database, "conversation"),
+          where("thread_id", "==", threadId)
+        );
+        const findConversation = await getDocs(conversationQuery);
+        if (findConversation.empty) {
+          return;
+        }
+        const data = findConversation.docs[0];
+        await updateDoc(doc(database, "conversation", data.id), {
+          messages: messages,
+        });
+      }
+    }
+    manageAddMessages();
+  }, [messages, threadId, messagesLength, status]);
 
   return (
     <div className="stretch mx-auto flex w-full max-w-md flex-col py-24">
