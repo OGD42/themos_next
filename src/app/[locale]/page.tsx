@@ -1,7 +1,6 @@
 import { useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
 import QuestionCarousel from "./_components/QuestionsCarousel";
-import LoginForm from "./_components/login-form";
 import StyledFirebaseAuth from "@/components/StyledFirebaseAuth";
 
 type Props = {

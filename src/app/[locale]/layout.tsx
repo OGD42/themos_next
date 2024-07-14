@@ -5,7 +5,6 @@ import { getMessages } from "next-intl/server";
 import SVGBackground from "@/assets/background.svg";
 import "./globals.css";
 import { Providers } from "./providers";
-import { BackgroundBeams } from "./_components/background-beams";
 import { SITE_URL } from "@/utils/helpers";
 import NavigationBar from "./_components/navigation-bar";
 
