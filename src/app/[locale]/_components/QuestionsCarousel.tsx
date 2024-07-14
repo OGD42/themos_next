@@ -7,13 +7,12 @@ import { Card, CardBody } from "@nextui-org/react";
 import { useTranslations } from "next-intl";
 
 type PropType = {
-  slides: number[];
   options?: EmblaOptionsType;
 };
 
 const QuestionCarousel: React.FC<PropType> = (props) => {
-  const { slides, options } = props;
-  const [emblaRef, emblaApi] = useEmblaCarousel(options, [
+  const { options } = props;
+  const [emblaRef, emblaApi] = useEmblaCarousel({ ...options, axis: "y" }, [
     Autoplay({ playOnInit: true, delay: 3000 }),
   ]);
   const [isPlaying, setIsPlaying] = useState(true);

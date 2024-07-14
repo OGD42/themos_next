@@ -12,9 +12,11 @@ type Props = {
 export default function Canada({ params: { locale } }: Props) {
   const t = useTranslations("Migrate_To");
   return (
-    <div className="my-10 w-full p-10 z-10">
-      <div className="flex w-full flex-col">
-        <h1 className="my-2">{t("migrate_canada_label")}</h1>
+    <div className="my-10 flex w-full p-10 z-10 justify-center items-center">
+      <div className="flex flex-col w-full md:w-[80%] lg:w-[70%] xl:w-[50%]">
+        <h1 className="my-2 text-4xl font-bold py-3">
+          {t("migrate_canada_label")}
+        </h1>
         <Tabs aria-label="Options">
           <Tab key="free" title={t("migrate_ask_label")}>
             <Card>
@@ -33,7 +35,7 @@ export default function Canada({ params: { locale } }: Props) {
           <Tab key="history" title={t("migrate_history_label")}>
             <Card>
               <CardBody>
-                <ListboxWrapper />
+                <ListboxWrapper country="canada" />
               </CardBody>
             </Card>
           </Tab>

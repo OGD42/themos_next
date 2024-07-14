@@ -27,13 +27,22 @@ export default function MessageItem({ message }: MessageType) {
         {message.role === "user" && <Avatar name="U" />}
         <span className="mx-2">
           <strong>{`${
-            message.role === "assistant" ? "Themos" : useStore.user?.displayName
+            message.role === "assistant"
+              ? "Themos"
+              : useStore.user?.email || "User"
           }`}</strong>
         </span>
         {message.role === "assistant" && <Avatar name="T.AI" />}
       </div>
       <br />
-      {message.role !== "data" && message.content}
+      <div
+        className={`${message.role === "assistant" ? "bg-white dark:bg-gray-800" : "bg-blue-500 dark:bg-blue-700"} p-4 rounded-lg shadow-md max-w-md`}
+      >
+        <p className="text-gray-800 dark:text-gray-300">
+          {message.role !== "data" && message.content.replace(/\【.*?】/g, "")}
+        </p>
+      </div>
+
       {message.role === "data" && (
         <>
           <br />
@@ -42,7 +51,6 @@ export default function MessageItem({ message }: MessageType) {
               strings={[JSON.stringify(message.data, null, 2)]}
               typeSpeed={40}
             />
-            {/* {JSON.stringify(message.data, null, 2)} */}
           </pre>
         </>
       )}

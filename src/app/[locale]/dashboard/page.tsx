@@ -28,6 +28,18 @@ export default function Dashboard({ params: { locale } }: Props) {
         .filter((i) => i),
     },
     {
+      cityName: t("dashboard_spain_label"),
+      title: t("dashboard_spain_citizenship_label"),
+      subtitle: t("dashboard_usa_residence_label"),
+      picture: Spain.src,
+      pros: t("dashboard_spain_pros")
+        .split(".")
+        .filter((i) => i),
+      cons: t("dashboard_spain_cons")
+        .split(".")
+        .filter((i) => i),
+    },
+    {
       cityName: t("dashboard_usa_label"),
       title: t("dashboard_usa_citizenship_label"),
       subtitle: t("dashboard_usa_residence_label"),
@@ -36,18 +48,6 @@ export default function Dashboard({ params: { locale } }: Props) {
         .split(".")
         .filter((i) => i),
       cons: t("dashboard_usa_cons")
-        .split(".")
-        .filter((i) => i),
-    },
-    {
-      cityName: t("dashboard_spain_label"),
-      title: t("dashboard_spain_citizenship_label"),
-      subtitle: t("dashboard_spain_residence_label"),
-      picture: Spain.src,
-      pros: t("dashboard_spain_pros")
-        .split(".")
-        .filter((i) => i),
-      cons: t("dashboard_spain_cons")
         .split(".")
         .filter((i) => i),
     },
@@ -69,7 +69,7 @@ export default function Dashboard({ params: { locale } }: Props) {
       <h1 className="text-xl font-extrabold tracking-tight sm:text-[2rem]">
         {t("dashboard_migrate_to_label")}
       </h1>
-      <div className="flex flex-grow flex-row flex-wrap justify-center gap-4">
+      <div className="flex flex-grow flex-row flex-wrap justify-center gap-6">
         {LOCATIONS.map((card, index) => (
           <CityCard key={`cc_${index}`} {...card} />
         ))}

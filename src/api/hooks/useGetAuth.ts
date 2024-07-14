@@ -1,25 +1,46 @@
 "use client";
 import { useState, useEffect } from "react";
-
-import { User, onAuthStateChanged } from "firebase/auth";
-
-import { auth } from "../firebase";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "@/api/firebase";
+import useStore from "@/api/store";
 
 const useGetAuth = () => {
-  const [user, setUser] = useState<null | User>();
+  const [state, setState] = useState<{
+    user: null | User;
+    isLoading: boolean;
+    error: boolean;
+  }>({
+    user: null,
+    isLoading: true,
+    error: false,
+  });
+  const userStore = useStore();
   useEffect(() => {
-    const observer = onAuthStateChanged(auth, (u) => {
-      if (u) {
-        setUser(u);
+    const subscription = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setState({
+          ...state,
+          user,
+          isLoading: false,
+          error: false,
+        });
+        userStore.setUser(user);
+      } else {
+        setState({
+          ...state,
+          user,
+          isLoading: false,
+          error: false,
+        });
+        userStore.setUser(undefined);
       }
-
-      setUser(null);
     });
-    return () => {
-      observer();
+
+    () => {
+      subscription();
     };
   }, []);
-  return user;
+  return { ...state };
 };
 
 export default useGetAuth;
